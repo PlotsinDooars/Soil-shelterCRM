@@ -5,549 +5,205 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soil & Shelter CRM</title>
   <style>
-    :root {
-      --primary: #2d5a27;
-      --primary-dark: #1b3818;
-      --accent: #d97706;
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
-      --text: #1f2937;
-      --border: #e5e7eb;
-      --danger: #dc2626;
-      --whatsapp: #25d366;
-      --whatsapp-dark: #128c7e;
-      --call: #2563eb;
-      --call-dark: #1d4ed8;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 30px; }
-    
-    header { background-color: var(--primary); color: white; padding: 15px 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    header h1 { font-size: 1.5rem; letter-spacing: 1px; }
-    header p { font-size: 0.85rem; opacity: 0.9; }
-
-    nav { display: flex; overflow-x: auto; background: var(--primary-dark); padding: 5px; gap: 5px; }
-    nav button { flex: 1; min-width: 110px; padding: 10px; border: none; background: transparent; color: white; font-weight: 600; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
-    nav button.active { background: var(--accent); }
-
-    .container { max-width: 1100px; margin: 15px auto; padding: 0 10px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-    .metric-card { background: var(--card-bg); padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
-    .metric-card h3 { font-size: 0.9rem; color: #6b7280; text-transform: uppercase; margin-bottom: 5px; }
-    .metric-card p { font-size: 2rem; font-weight: bold; color: var(--primary-dark); }
-
-    .form-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .form-card h2 { margin-bottom: 15px; color: var(--primary); font-size: 1.2rem; border-bottom: 2px solid var(--bg); padding-bottom: 5px; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 4px; }
-    .form-group.full-width { grid-column: 1 / -1; }
-    label { font-size: 0.8rem; font-weight: 600; color: #4b5563; }
-    input, select, textarea { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; width: 100%; }
-    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); }
-    
-    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-    .checkbox-group label { font-size: 0.85rem; font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-
-    .btn { background: var(--primary); color: white; padding: 6px 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
-    .btn:hover { background: var(--primary-dark); }
-    .btn-accent { background: var(--accent); }
-    .btn-edit { background: #4b5563; }
-    .btn-edit:hover { background: #374151; }
-    .btn-danger { background: var(--danger); }
-    .btn-danger:hover { background: #b91c1c; }
-    .btn-call { background: var(--call); }
-    .btn-call:hover { background: var(--call-dark); }
-    .btn-wa { background: var(--whatsapp); }
-    .btn-wa:hover { background: var(--whatsapp-dark); }
-
-    .table-container { background: var(--card-bg); border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
-    th { background: #f9fafb; padding: 10px; border-bottom: 2px solid var(--border); color: #374151; }
-    td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    tr:hover { background: #f9fafb; }
-    .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
-    .badge-available { background: #d1fae5; color: #065f46; }
-    .badge-pending { background: #fef3c7; color: #92400e; }
-
-    .action-btns { display: flex; gap: 4px; flex-wrap: wrap; }
-    .match-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 12px; margin-top: 10px; }
-    #sync-status { text-align: center; font-size: 0.8rem; padding: 5px; background: #e0f2fe; color: #0369a1; border-bottom: 1px solid #bae6fd; }
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
+    h1, h2 { color: #2c3e50; }
+    .status-bar { padding: 10px; background-color: #e8f4ea; border: 1px solid #c8e6c9; border-radius: 4px; font-weight: bold; color: #2e7d32; margin-bottom: 20px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; min-width: 300px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+    button { background-color: #27ae60; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+    button:hover { background-color: #219150; }
+    .action-btns { display: flex; gap: 8px; }
+    .btn-call { background-color: #27ae60; text-decoration: none; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
+    .btn-wa { background-color: #25d366; text-decoration: none; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+    th { background-color: #f2f2f2; }
+    .checkbox-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .checkbox-group label { font-weight: normal; }
   </style>
 </head>
 <body>
 
-  <div id="sync-status">🔄 Syncing Data...</div>
-
-  <header>
-    <h1>SOIL & SHELTER</h1>
-    <p>YOUR PROPERTY CONSULTANT - CRM</p>
-  </header>
-
-  <nav>
-    <button class="active" onclick="switchTab('dashboard')">Dashboard</button>
-    <button onclick="switchTab('add-client')" id="add-client-tab-btn">+ Add Client</button>
-    <button onclick="switchTab('add-property')" id="add-prop-tab-btn">+ Add Property</button>
-    <button onclick="switchTab('clients')">Clients List</button>
-    <button onclick="switchTab('properties')">Plots List</button>
-    <button onclick="switchTab('matchmaker')">🔍 Matchmaker</button>
-  </nav>
+  <h1>Soil & Shelter CRM</h1>
+  <div class="status-bar" id="sync-status">✅ Live Cloud Synced</div>
 
   <div class="container">
-
-    <!-- DASHBOARD TAB -->
-    <div id="dashboard" class="tab-content active">
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <h3>Call Dues Today</h3>
-          <p id="metric-call-dues">0</p>
+    <!-- CLIENT FORM -->
+    <div class="card">
+      <h2>Add / Edit Client</h2>
+      <form id="clientForm">
+        <input type="hidden" id="c_edit_index" value="-1">
+        <div class="form-group"><label>Client ID</label><input type="text" id="c_id" required></div>
+        <div class="form-group"><label>Date</label><input type="date" id="c_date" required></div>
+        <div class="form-group"><label>Name</label><input type="text" id="c_name" required></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="c_phone" required></div>
+        <div class="form-group"><label>Address</label><input type="text" id="c_address"></div>
+        <div class="form-group">
+          <label>Intended Use</label>
+          <select id="c_intended" onchange="toggleOther('c_intended', 'c_intended_other_div')">
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Agricultural">Agricultural</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-        <div class="metric-card">
-          <h3>Available Plots</h3>
-          <p id="metric-available-plots">0</p>
+        <div class="form-group" id="c_intended_other_div" style="display:none;"><label>Other Intended Use</label><input type="text" id="c_intended_other"></div>
+        <div class="form-group">
+          <label>Specialty</label>
+          <select id="c_specialty" onchange="toggleOther('c_specialty', 'c_specialty_other_div')">
+            <option value="Plot/Land">Plot/Land</option>
+            <option value="Flat/Apartment">Flat/Apartment</option>
+            <option value="House/Villa">House/Villa</option>
+            <option value="Commercial Space">Commercial Space</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-        <div class="metric-card">
-          <h3>Active Clients</h3>
-          <p id="metric-active-clients">0</p>
+        <div class="form-group" id="c_specialty_other_div" style="display:none;"><label>Other Specialty</label><input type="text" id="c_specialty_other"></div>
+        <div class="form-group"><label>Area Category</label><input type="text" id="c_area_cat"></div>
+        <div class="form-group"><label>Owner Category</label><input type="text" id="c_owner_cat"></div>
+        <div class="form-group">
+          <label>Location</label>
+          <select id="c_location" onchange="toggleOther('c_location', 'c_location_other_div')">
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-      </div>
-
-      <div class="form-card">
-        <h2>⏰ Follow-Up Calls Due Today</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Client ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Status</th>
-                <th>Next Follow Up</th>
-                <th>Remarks</th>
-                <th>Quick Actions</th>
-              </tr>
-            </thead>
-            <tbody id="dues-table-body">
-              <tr><td colspan="7" style="text-align: center; color: #9ca3af;">Loading data...</td></tr>
-            </tbody>
-          </table>
+        <div class="form-group" id="c_location_other_div" style="display:none;"><label>Other Location</label><input type="text" id="c_location_other"></div>
+        <div class="form-group"><label>Min Size</label><input type="number" id="c_min_size"></div>
+        <div class="form-group"><label>Max Size</label><input type="number" id="c_max_size"></div>
+        <div class="form-group"><label>Size Unit</label><input type="text" id="c_size_unit" value="Sq Ft"></div>
+        <div class="form-group"><label>Min Budget</label><input type="number" id="c_min_budget"></div>
+        <div class="form-group"><label>Max Budget</label><input type="number" id="c_max_budget"></div>
+        <div class="form-group"><label>Budget Unit</label><input type="text" id="c_budget_unit" value="INR"></div>
+        <div class="form-group"><label>Next Follow Up</label><input type="date" id="c_followup"></div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="c_status">
+            <option value="Active">Active</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Closed">Closed</option>
+          </select>
         </div>
-      </div>
+        <div class="form-group"><label>Remarks</label><textarea id="c_remarks"></textarea></div>
+        <button type="submit">Save Client</button>
+      </form>
     </div>
 
-    <!-- ADD / EDIT CLIENT TAB -->
-    <div id="add-client" class="tab-content">
-      <div class="form-card">
-        <h2 id="client-form-title">Add New Client</h2>
-        <form id="clientForm">
-          <input type="hidden" id="c_edit_index" value="-1">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Date</label>
-              <input type="date" id="c_date" required>
-            </div>
-            <div class="form-group">
-              <label>Client ID (Auto)</label>
-              <input type="text" id="c_id" readonly style="background: #e5e7eb;">
-            </div>
-            <div class="form-group">
-              <label>Client Name</label>
-              <input type="text" id="c_name" required placeholder="e.g. Rahul Roy">
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" id="c_phone" required placeholder="+91 9876543210">
-            </div>
-            <div class="form-group full-width">
-              <label>Address</label>
-              <input type="text" id="c_address" placeholder="Client home/office address">
-            </div>
-
-            <div class="form-group">
-              <label>Intended Use</label>
-              <select id="c_intended" required onchange="toggleOtherInput(this, 'c_intended_other')">
-                <option value="">Select Intended Use</option>
-                <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
-                <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
-                <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
-                <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
-                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="c_intended_other" placeholder="Specify Other Intended Use" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Specialty</label>
-              <select id="c_specialty" required onchange="toggleOtherInput(this, 'c_specialty_other')">
-                <option value="">Select Specialty</option>
-                <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
-                <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
-                <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
-                <option>PADDY FIELD</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="c_specialty_other" placeholder="Specify Other Specialty" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Area Category</label>
-              <select id="c_area_cat" required>
-                <option>PLAIN AREA</option><option>HILLS AREA</option><option>BOTH AREA</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Owner Category</label>
-              <select id="c_owner_cat" required>
-                <option>GENERAL</option><option>TRIBAL</option><option>BOTH</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Plot Location</label>
-              <select id="c_location" required onchange="toggleOtherInput(this, 'c_location_other')">
-                <option value="">Select Location</option>
-                <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
-                <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
-                <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
-                <option>DARJEELING</option><option>LAVA</option><option>CHUIKHIM</option><option>RESOP</option>
-                <option>LOLEGAON</option><option>SAMSING</option><option>JHALONG</option><option>CHILAPATA</option>
-                <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
-                <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
-                <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
-                <option>NAXALBARI</option><option>MATIGARA</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="c_location_other" placeholder="Specify Other Location" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Min Size & Unit</label>
-              <div style="display:flex; gap:5px;">
-                <input type="number" id="c_min_size" placeholder="Min">
-                <select id="c_size_unit">
-                  <option>DECIMAL</option><option>ACRE</option><option>KATTHA</option><option>BIGHA</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Max Size</label>
-              <input type="number" id="c_max_size" placeholder="Max">
-            </div>
-
-            <div class="form-group">
-              <label>Budget Range (Min - Max)</label>
-              <div style="display:flex; gap:5px;">
-                <input type="number" id="c_min_budget" placeholder="Min ₹">
-                <input type="number" id="c_max_budget" placeholder="Max ₹">
-                <select id="c_budget_unit">
-                  <option>THOUSAND</option><option>LAKH</option><option>CRORE</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Next Follow Up Date</label>
-              <input type="date" id="c_followup" required>
-            </div>
-
-            <div class="form-group">
-              <label>Status</label>
-              <select id="c_status">
-                <option>NEW</option><option>INTERESTED</option><option>NOT INTERESTED</option>
-                <option>FINAL</option><option>FOLLOW UP</option><option>CONVERTED</option><option>DEAL CLOSE</option>
-              </select>
-            </div>
-
-            <div class="form-group full-width">
-              <label>Remarks</label>
-              <textarea id="c_remarks" rows="2" placeholder="Notes on client preferences..."></textarea>
-            </div>
-          </div>
-          <br>
-          <div style="display:flex; gap:10px;">
-            <button type="submit" class="btn" id="clientSubmitBtn">Save Client</button>
-            <button type="button" class="btn btn-danger" id="clientCancelBtn" style="display:none;" onclick="resetClientForm()">Cancel Edit</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- ADD / EDIT PROPERTY TAB -->
-    <div id="add-property" class="tab-content">
-      <div class="form-card">
-        <h2 id="prop-form-title">Add New Property</h2>
-        <form id="propertyForm">
-          <input type="hidden" id="p_edit_index" value="-1">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Date Listed</label>
-              <input type="date" id="p_date" required>
-            </div>
-            <div class="form-group">
-              <label>Property ID (Auto)</label>
-              <input type="text" id="p_id" readonly style="background: #e5e7eb;">
-            </div>
-            <div class="form-group">
-              <label>Key Man Name</label>
-              <input type="text" id="p_keyman" required placeholder="Contact/Owner Name">
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" id="p_phone" required placeholder="+91 9876543210">
-            </div>
-
-            <div class="form-group">
-              <label>Intended Use</label>
-              <select id="p_intended" required onchange="toggleOtherInput(this, 'p_intended_other')">
-                <option value="">Select Intended Use</option>
-                <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
-                <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
-                <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
-                <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
-                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="p_intended_other" placeholder="Specify Other Intended Use" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Specialty</label>
-              <select id="p_specialty" required onchange="toggleOtherInput(this, 'p_specialty_other')">
-                <option value="">Select Specialty</option>
-                <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
-                <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
-                <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
-                <option>PADDY FIELD</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="p_specialty_other" placeholder="Specify Other Specialty" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Area Category</label>
-              <select id="p_area_cat" required>
-                <option>PLAIN AREA</option><option>HILLS AREA</option><option>BOTH AREA</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Owner Category</label>
-              <select id="p_owner_cat" required>
-                <option>GENERAL</option><option>TRIBAL</option><option>BOTH</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Plot Location</label>
-              <select id="p_location" required onchange="toggleOtherInput(this, 'p_location_other')">
-                <option value="">Select Location</option>
-                <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
-                <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
-                <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
-                <option>DARJEELING</option><option>LAVA</option><option>CHUIKHIM</option><option>RESOP</option>
-                <option>LOLEGAON</option><option>SAMSING</option><option>JHALONG</option><option>CHILAPATA</option>
-                <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
-                <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
-                <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
-                <option>NAXALBARI</option><option>MATIGARA</option><option value="OTHERS">OTHERS</option>
-              </select>
-              <input type="text" id="p_location_other" placeholder="Specify Other Location" style="display:none; margin-top:5px;">
-            </div>
-
-            <div class="form-group">
-              <label>Plot Size & Unit</label>
-              <div style="display:flex; gap:5px;">
-                <input type="number" id="p_size" required placeholder="Size">
-                <select id="p_size_unit">
-                  <option>DECIMAL</option><option>ACRE</option><option>KATTHA</option><option>BIGHA</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Asking / Sale Price & Unit</label>
-              <div style="display:flex; gap:5px;">
-                <input type="number" id="p_price" required placeholder="Price ₹">
-                <select id="p_price_unit">
-                  <option>THOUSAND</option><option>LAKH</option><option>CRORE</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Status</label>
-              <select id="p_status">
-                <option>AVAILABLE</option><option>SOLD</option><option>HOLD</option>
-              </select>
-            </div>
-
-            <div class="form-group full-width">
-              <label>1. Know Owner Details (Select all available)</label>
-              <div class="checkbox-group">
-                <label><input type="checkbox" name="p_owner_details" value="Mobile No"> Mobile No</label>
-                <label><input type="checkbox" name="p_owner_details" value="ROR Porcha"> ROR Porcha</label>
-                <label><input type="checkbox" name="p_owner_details" value="Deeds"> Deeds</label>
-                <label><input type="checkbox" name="p_owner_details" value="Site Plan"> Site Plan</label>
-                <label><input type="checkbox" name="p_owner_details" value="Resident Address"> Resident Address</label>
-                <label><input type="checkbox" name="p_owner_details" value="Legal Heir"> Legal Heir</label>
-              </div>
-            </div>
-
-            <div class="form-group full-width" style="border:1px solid #e5e7eb; padding:10px; border-radius:6px; background:#fafafa;">
-              <label style="font-weight:bold; color:var(--primary);">2. Plot Infrastructure Available</label>
-              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:5px;">
-                <div>
-                  <label>Road (Type & Width)</label>
-                  <input type="text" id="p_infra_road" placeholder="e.g. Pitch Road, 20 ft">
-                </div>
-                <div>
-                  <label>Water (Source & Distance)</label>
-                  <input type="text" id="p_infra_water" placeholder="e.g. PHE / Well, 50m">
-                </div>
-                <div>
-                  <label>Electricity (Nearest Pole Type)</label>
-                  <input type="text" id="p_infra_elec" placeholder="e.g. LT Pole, 10ft away">
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group full-width">
-              <label>3. Arise Any Dispute?</label>
-              <input type="text" id="p_dispute" placeholder="Mention dispute details if any, or type 'NO'">
-            </div>
-
-            <div class="form-group">
-              <label>4. Taken Photo & Video?</label>
-              <select id="p_media">
-                <option>NO</option><option>YES</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>5. Taken Google Location?</label>
-              <select id="p_gloc">
-                <option>NO</option><option>YES</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>6. Verified Status?</label>
-              <select id="p_verified">
-                <option>NO</option><option>YES</option>
-              </select>
-            </div>
-
-            <div class="form-group full-width">
-              <label>Address of Property</label>
-              <input type="text" id="p_address" placeholder="Detailed property address">
-            </div>
-
-            <div class="form-group full-width">
-              <label>Remarks (Owner Rate, Agent Rate, Notes)</label>
-              <textarea id="p_remarks" rows="2"></textarea>
-            </div>
-          </div>
-          <br>
-          <div style="display:flex; gap:10px;">
-            <button type="submit" class="btn" id="propSubmitBtn">Save Property</button>
-            <button type="button" class="btn btn-danger" id="propCancelBtn" style="display:none;" onclick="resetPropForm()">Cancel Edit</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- CLIENTS LIST TAB -->
-    <div id="clients" class="tab-content">
-      <div class="form-card">
-        <h2>All Clients</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Client ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Intended Use</th>
-                <th>Location</th>
-                <th>Budget</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="clients-list-body"></tbody>
-          </table>
+    <!-- PROPERTY FORM -->
+    <div class="card">
+      <h2>Add / Edit Property</h2>
+      <form id="propertyForm">
+        <input type="hidden" id="p_edit_index" value="-1">
+        <div class="form-group"><label>Property ID</label><input type="text" id="p_id" required></div>
+        <div class="form-group"><label>Date Listed</label><input type="date" id="p_date" required></div>
+        <div class="form-group"><label>Key Man</label><input type="text" id="p_keyman"></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="p_phone" required></div>
+        <div class="form-group">
+          <label>Intended Use</label>
+          <select id="p_intended" onchange="toggleOther('p_intended', 'p_intended_other_div')">
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Agricultural">Agricultural</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-      </div>
-    </div>
-
-    <!-- PROPERTIES LIST TAB -->
-    <div id="properties" class="tab-content">
-      <div class="form-card">
-        <h2>All Listed Properties</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Property ID</th>
-                <th>Key Man</th>
-                <th>Phone</th>
-                <th>Location</th>
-                <th>Size</th>
-                <th>Price</th>
-                <th>Verified</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="properties-list-body"></tbody>
-          </table>
+        <div class="form-group" id="p_intended_other_div" style="display:none;"><label>Other Intended Use</label><input type="text" id="p_intended_other"></div>
+        <div class="form-group">
+          <label>Specialty</label>
+          <select id="p_specialty" onchange="toggleOther('p_specialty', 'p_specialty_other_div')">
+            <option value="Plot/Land">Plot/Land</option>
+            <option value="Flat/Apartment">Flat/Apartment</option>
+            <option value="House/Villa">House/Villa</option>
+            <option value="Commercial Space">Commercial Space</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-      </div>
-    </div>
-
-    <!-- MATCHMAKER TAB -->
-    <div id="matchmaker" class="tab-content">
-      <div class="form-card">
-        <h2>🎯 Client - Property Matchmaker Engine</h2>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Location Filter</label>
-            <select id="m_location">
-              <option value="">ALL LOCATIONS</option>
-              <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
-              <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
-              <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
-              <option>DARJEELING</option><option>GAJOLDOBA</option><option>SILIGURI</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Intended Use Filter</label>
-            <select id="m_intended">
-              <option value="">ALL USES</option>
-              <option>RESIDENT</option><option>FARMHOUSE</option><option>INVESTMENT</option>
-              <option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option><option>TEA PLANTATION</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Specialty Filter</label>
-            <select id="m_specialty">
-              <option value="">ALL SPECIALTIES</option>
-              <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option>
-              <option>NH 17 SIDE</option><option>FOREST SIDE</option>
-            </select>
+        <div class="form-group" id="p_specialty_other_div" style="display:none;"><label>Other Specialty</label><input type="text" id="p_specialty_other"></div>
+        <div class="form-group"><label>Area Category</label><input type="text" id="p_area_cat"></div>
+        <div class="form-group"><label>Owner Category</label><input type="text" id="p_owner_cat"></div>
+        <div class="form-group">
+          <label>Location</label>
+          <select id="p_location" onchange="toggleOther('p_location', 'p_location_other_div')">
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group" id="p_location_other_div" style="display:none;"><label>Other Location</label><input type="text" id="p_location_other"></div>
+        <div class="form-group"><label>Size</label><input type="number" id="p_size"></div>
+        <div class="form-group"><label>Size Unit</label><input type="text" id="p_size_unit" value="Sq Ft"></div>
+        <div class="form-group"><label>Price</label><input type="number" id="p_price"></div>
+        <div class="form-group"><label>Price Unit</label><input type="text" id="p_price_unit" value="INR"></div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="p_status">
+            <option value="Available">Available</option>
+            <option value="Pending">Pending</option>
+            <option value="Sold">Sold</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Owner Details Available</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="p_owner_details" value="Name"> Name</label>
+            <label><input type="checkbox" name="p_owner_details" value="Phone"> Phone</label>
+            <label><input type="checkbox" name="p_owner_details" value="Address"> Address</label>
+            <label><input type="checkbox" name="p_owner_details" value="Documents"> Documents</label>
           </div>
         </div>
-        <br>
-        <button class="btn btn-accent" onclick="runMatchmaker()">Run Matchmaker Engine</button>
-        
-        <div id="match-results" style="margin-top:20px;"></div>
-      </div>
+        <div class="form-group"><label>Road Infra</label><input type="text" id="p_infra_road"></div>
+        <div class="form-group"><label>Water Infra</label><input type="text" id="p_infra_water"></div>
+        <div class="form-group"><label>Electricity Infra</label><input type="text" id="p_infra_elec"></div>
+        <div class="form-group"><label>Dispute Details</label><input type="text" id="p_dispute"></div>
+        <div class="form-group"><label>Media Taken</label><input type="text" id="p_media"></div>
+        <div class="form-group"><label>Google Location</label><input type="text" id="p_gloc"></div>
+        <div class="form-group">
+          <label>Verified</label>
+          <select id="p_verified">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Address</label><input type="text" id="p_address"></div>
+        <div class="form-group"><label>Remarks</label><textarea id="p_remarks"></textarea></div>
+        <button type="submit">Save Property</button>
+      </form>
     </div>
-
   </div>
 
+  <h2>Clients Directory</h2>
+  <table id="clientTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Properties Directory</h2>
+  <table id="propTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Key Man</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLw2mVHP2BD2ljLr6t-hL0ocKfOOE7ashhssK7xjxojgw6iie1LZMpXcgIZp3Nz3XC/exec";
+    // YOUR APPS SCRIPT WEB APP URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLw2mVHP2BD21jLr6t-hL0ockt8jG3mS8V4Kz_a7x_v/exec"; 
 
     let clients = JSON.parse(localStorage.getItem('ss_clients')) || [];
     let properties = JSON.parse(localStorage.getItem('ss_properties')) || [];
@@ -556,94 +212,18 @@
     document.getElementById('p_date').valueAsDate = new Date();
     document.getElementById('c_followup').valueAsDate = new Date();
 
-    function cleanPhone(phone) {
-      if (!phone) return '';
-      return phone.replace(/[^0-9]/g, '');
-    }
-
-    function updateIDs() {
-      if (document.getElementById('c_edit_index').value === "-1") {
-        document.getElementById('c_id').value = 'C' + (clients.length + 1);
-      }
-      if (document.getElementById('p_edit_index').value === "-1") {
-        document.getElementById('p_id').value = 'P' + (properties.length + 1);
-      }
-    }
-
-    function switchTab(tabId, eventObj) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if(eventObj && eventObj.target) {
-        eventObj.target.classList.add('active');
-      } else {
-        if(tabId === 'add-client') document.getElementById('add-client-tab-btn').classList.add('active');
-        if(tabId === 'add-property') document.getElementById('add-prop-tab-btn').classList.add('active');
-      }
-      renderData();
-    }
-
-    function toggleOtherInput(selectEl, inputId) {
-      const inputEl = document.getElementById(inputId);
-      if (selectEl.value === 'OTHERS') {
-        inputEl.style.display = 'block';
-        inputEl.required = true;
-      } else {
-        inputEl.style.display = 'none';
-        inputEl.required = false;
-        inputEl.value = '';
-      }
+    function toggleOther(selectId, divId) {
+      const select = document.getElementById(selectId);
+      const div = document.getElementById(divId);
+      div.style.display = select.value === 'Other' ? 'block' : 'none';
     }
 
     function getVal(selectId, otherId) {
-      const selectVal = document.getElementById(selectId).value;
-      if (selectVal === 'OTHERS') {
-        return document.getElementById(otherId).value;
-      }
-      return selectVal;
+      const val = document.getElementById(selectId).value;
+      return val === 'Other' ? document.getElementById(otherId).value : val;
     }
 
-    function setSelectVal(selectId, otherId, val) {
-      const selectEl = document.getElementById(selectId);
-      const options = Array.from(selectEl.options).map(o => o.value);
-      if (options.includes(val)) {
-        selectEl.value = val;
-        toggleOtherInput(selectEl, otherId);
-      } else if (val) {
-        selectEl.value = 'OTHERS';
-        toggleOtherInput(selectEl, otherId);
-        document.getElementById(otherId).value = val;
-      }
-    }
-
-    async function fetchDataFromCloud() {
-      const syncStatus = document.getElementById('sync-status');
-      if(SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-        syncStatus.innerText = '📱 Local Storage Active (Add Google Sheet URL to enable Cloud Sync)';
-        renderData();
-        return;
-      }
-      syncStatus.innerText = '🔄 Syncing with Cloud Database...';
-      try {
-        const response = await fetch(SCRIPT_URL);
-        const data = await response.json();
-        clients = data.clients || [];
-        properties = data.properties || [];
-        localStorage.setItem('ss_clients', JSON.stringify(clients));
-        localStorage.setItem('ss_properties', JSON.stringify(properties));
-        syncStatus.innerText = '✅ Live Cloud Synced';
-        syncStatus.style.background = '#d1fae5';
-        syncStatus.style.color = '#065f46';
-        renderData();
-      } catch (err) {
-        syncStatus.innerText = '⚠️ Using local storage (Cloud unavailable)';
-        syncStatus.style.background = '#fef3c7';
-        syncStatus.style.color = '#92400e';
-        renderData();
-      }
-    }
-
-    // CLIENT ADD / EDIT FORM
+    // CLIENT SUBMIT FORM
     document.getElementById('clientForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const editIdx = parseInt(document.getElementById('c_edit_index').value);
@@ -670,74 +250,33 @@
         remarks: document.getElementById('c_remarks').value
       };
 
-      if (editIdx > -1) {
-        clients[editIdx] = clientData;
-      } else {
-        clients.push(clientData);
-      }
+      if (editIdx > -1) { clients[editIdx] = clientData; } 
+      else { clients.push(clientData); }
 
       localStorage.setItem('ss_clients', JSON.stringify(clients));
+
+      if (SCRIPT_URL) {
+        document.getElementById('sync-status').innerText = '⏳ Syncing to Cloud...';
+        try {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clients: clients, properties: properties })
+          });
+          document.getElementById('sync-status').innerText = '✅ Live Cloud Synced';
+        } catch (err) { console.error("Sync Error:", err); }
+      }
+
       alert(editIdx > -1 ? 'Client Updated!' : 'Client Added!');
       resetClientForm();
       renderData();
     });
 
-    function editClient(index) {
-      const c = clients[index];
-      document.getElementById('c_edit_index').value = index;
-      document.getElementById('c_id').value = c.id;
-      document.getElementById('c_date').value = c.date || new Date().toISOString().split('T')[0];
-      document.getElementById('c_name').value = c.name;
-      document.getElementById('c_phone').value = c.phone;
-      document.getElementById('c_address').value = c.address || '';
-      
-      setSelectVal('c_intended', 'c_intended_other', c.intended);
-      setSelectVal('c_specialty', 'c_specialty_other', c.specialty);
-      setSelectVal('c_location', 'c_location_other', c.location);
-
-      document.getElementById('c_area_cat').value = c.area_cat || 'PLAIN AREA';
-      document.getElementById('c_owner_cat').value = c.owner_cat || 'GENERAL';
-      document.getElementById('c_min_size').value = c.min_size || '';
-      document.getElementById('c_max_size').value = c.max_size || '';
-      document.getElementById('c_size_unit').value = c.size_unit || 'DECIMAL';
-      document.getElementById('c_min_budget').value = c.min_budget || '';
-      document.getElementById('c_max_budget').value = c.max_budget || '';
-      document.getElementById('c_budget_unit').value = c.budget_unit || 'LAKH';
-      document.getElementById('c_followup').value = c.followup || '';
-      document.getElementById('c_status').value = c.status || 'NEW';
-      document.getElementById('c_remarks').value = c.remarks || '';
-
-      document.getElementById('client-form-title').innerText = 'Edit Client Details (' + c.id + ')';
-      document.getElementById('clientSubmitBtn').innerText = 'Update Client';
-      document.getElementById('clientCancelBtn').style.display = 'inline-block';
-
-      switchTab('add-client');
-    }
-
-    function deleteClient(index) {
-      if (confirm('Are you sure you want to delete client ' + clients[index].id + '?')) {
-        clients.splice(index, 1);
-        localStorage.setItem('ss_clients', JSON.stringify(clients));
-        renderData();
-      }
-    }
-
-    function resetClientForm() {
-      document.getElementById('clientForm').reset();
-      document.getElementById('c_edit_index').value = '-1';
-      document.getElementById('client-form-title').innerText = 'Add New Client';
-      document.getElementById('clientSubmitBtn').innerText = 'Save Client';
-      document.getElementById('clientCancelBtn').style.display = 'none';
-      document.getElementById('c_date').valueAsDate = new Date();
-      document.getElementById('c_followup').valueAsDate = new Date();
-      updateIDs();
-    }
-
-    // PROPERTY ADD / EDIT FORM
+    // PROPERTY SUBMIT FORM
     document.getElementById('propertyForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const editIdx = parseInt(document.getElementById('p_edit_index').value);
-
       const ownerDetailsChecked = Array.from(document.querySelectorAll('input[name="p_owner_details"]:checked')).map(cb => cb.value);
 
       const propData = {
@@ -767,202 +306,73 @@
         remarks: document.getElementById('p_remarks').value
       };
 
-      if (editIdx > -1) {
-        properties[editIdx] = propData;
-      } else {
-        properties.push(propData);
-      }
+      if (editIdx > -1) { properties[editIdx] = propData; } 
+      else { properties.push(propData); }
 
       localStorage.setItem('ss_properties', JSON.stringify(properties));
+
+      if (SCRIPT_URL) {
+        document.getElementById('sync-status').innerText = '⏳ Syncing to Cloud...';
+        try {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clients: clients, properties: properties })
+          });
+          document.getElementById('sync-status').innerText = '✅ Live Cloud Synced';
+        } catch (err) { console.error("Sync Error:", err); }
+      }
+
       alert(editIdx > -1 ? 'Property Updated!' : 'Property Added!');
       resetPropForm();
       renderData();
     });
 
-    function editProperty(index) {
-      const p = properties[index];
-      document.getElementById('p_edit_index').value = index;
-      document.getElementById('p_id').value = p.id;
-      document.getElementById('p_date').value = p.date || new Date().toISOString().split('T')[0];
-      document.getElementById('p_keyman').value = p.keyman;
-      document.getElementById('p_phone').value = p.phone;
-
-      setSelectVal('p_intended', 'p_intended_other', p.intended);
-      setSelectVal('p_specialty', 'p_specialty_other', p.specialty);
-      setSelectVal('p_location', 'p_location_other', p.location);
-
-      document.getElementById('p_area_cat').value = p.area_cat || 'PLAIN AREA';
-      document.getElementById('p_owner_cat').value = p.owner_cat || 'GENERAL';
-      document.getElementById('p_size').value = p.size;
-      document.getElementById('p_size_unit').value = p.size_unit || 'DECIMAL';
-      document.getElementById('p_price').value = p.price;
-      document.getElementById('p_price_unit').value = p.price_unit || 'LAKH';
-      document.getElementById('p_status').value = p.status || 'AVAILABLE';
-
-      document.querySelectorAll('input[name="p_owner_details"]').forEach(cb => {
-        cb.checked = p.owner_details ? p.owner_details.includes(cb.value) : false;
-      });
-
-      document.getElementById('p_infra_road').value = p.road || '';
-      document.getElementById('p_infra_water').value = p.water || '';
-      document.getElementById('p_infra_elec').value = p.elec || '';
-      document.getElementById('p_dispute').value = p.dispute || '';
-      document.getElementById('p_media').value = p.media || 'NO';
-      document.getElementById('p_gloc').value = p.gloc || 'NO';
-      document.getElementById('p_verified').value = p.verified || 'NO';
-      document.getElementById('p_address').value = p.address || '';
-      document.getElementById('p_remarks').value = p.remarks || '';
-
-      document.getElementById('prop-form-title').innerText = 'Edit Property Details (' + p.id + ')';
-      document.getElementById('propSubmitBtn').innerText = 'Update Property';
-      document.getElementById('propCancelBtn').style.display = 'inline-block';
-
-      switchTab('add-property');
-    }
-
-    function deleteProperty(index) {
-      if (confirm('Are you sure you want to delete property ' + properties[index].id + '?')) {
-        properties.splice(index, 1);
-        localStorage.setItem('ss_properties', JSON.stringify(properties));
-        renderData();
-      }
+    function resetClientForm() {
+      document.getElementById('clientForm').reset();
+      document.getElementById('c_edit_index').value = "-1";
+      document.getElementById('c_date').valueAsDate = new Date();
+      document.getElementById('c_followup').valueAsDate = new Date();
     }
 
     function resetPropForm() {
       document.getElementById('propertyForm').reset();
-      document.getElementById('p_edit_index').value = '-1';
-      document.getElementById('prop-form-title').innerText = 'Add New Property';
-      document.getElementById('propSubmitBtn').innerText = 'Save Property';
-      document.getElementById('propCancelBtn').style.display = 'none';
+      document.getElementById('p_edit_index').value = "-1";
       document.getElementById('p_date').valueAsDate = new Date();
-      updateIDs();
     }
 
     function renderData() {
-      updateIDs();
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      const dues = clients.filter(c => c.followup === todayStr);
-      document.getElementById('metric-call-dues').innerText = dues.length;
-      document.getElementById('metric-available-plots').innerText = properties.filter(p => p.status === 'AVAILABLE').length;
-      document.getElementById('metric-active-clients').innerText = clients.filter(c => c.status !== 'DEAL CLOSE' && c.status !== 'NOT INTERESTED').length;
-
-      const duesBody = document.getElementById('dues-table-body');
-      if (dues.length === 0) {
-        duesBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>`;
-      } else {
-        duesBody.innerHTML = dues.map(c => {
-          const originalIdx = clients.findIndex(item => item.id === c.id);
-          const rawPhone = cleanPhone(c.phone);
-          const waMsg = encodeURIComponent(`Hello ${c.name}, greetings from Soil & Shelter! Calling regarding your property query.`);
-          return `
-            <tr>
-              <td><b>${c.id}</b></td>
-              <td>${c.name}</td>
-              <td>${c.phone}</td>
-              <td><span class="badge badge-pending">${c.status}</span></td>
-              <td>${c.followup}</td>
-              <td>${c.remarks || '-'}</td>
-              <td>
-                <div class="action-btns">
-                  <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
-                  <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
-                  <button class="btn btn-edit" onclick="editClient(${originalIdx})">Edit</button>
-                </div>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
-
-      document.getElementById('clients-list-body').innerHTML = clients.map((c, i) => {
-        const rawPhone = cleanPhone(c.phone);
-        const waMsg = encodeURIComponent(`Hello ${c.name}, greetings from Soil & Shelter! We have an update regarding your plot requirement in ${c.location}.`);
-        return `
-          <tr>
-            <td><b>${c.id}</b></td>
-            <td>${c.name}</td>
-            <td>${c.phone}</td>
-            <td>${c.intended}</td>
-            <td>${c.location}</td>
-            <td>₹${c.min_budget}-${c.max_budget} ${c.budget_unit}</td>
-            <td><span class="badge badge-pending">${c.status}</span></td>
-            <td>
-              <div class="action-btns">
-                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
-                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
-                <button class="btn btn-edit" onclick="editClient(${i})">Edit</button>
-                <button class="btn btn-danger" onclick="deleteClient(${i})">Delete</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      document.getElementById('properties-list-body').innerHTML = properties.map((p, i) => {
-        const rawPhone = cleanPhone(p.phone);
-        const waMsg = encodeURIComponent(`Hello ${p.keyman}, regarding Property ID: ${p.id} listed in ${p.location}.`);
-        return `
-          <tr>
-            <td><b>${p.id}</b></td>
-            <td>${p.keyman}</td>
-            <td>${p.phone}</td>
-            <td>${p.location}</td>
-            <td>${p.size} ${p.size_unit}</td>
-            <td>₹${p.price} ${p.price_unit}</td>
-            <td><b>${p.verified || 'NO'}</b></td>
-            <td><span class="badge badge-available">${p.status}</span></td>
-            <td>
-              <div class="action-btns">
-                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
-                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
-                <button class="btn btn-edit" onclick="editProperty(${i})">Edit</button>
-                <button class="btn btn-danger" onclick="deleteProperty(${i})">Delete</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function runMatchmaker() {
-      const loc = document.getElementById('m_location').value;
-      const intended = document.getElementById('m_intended').value;
-      const spec = document.getElementById('m_specialty').value;
-
-      const matches = properties.filter(p => {
-        return (!loc || p.location === loc) &&
-               (!intended || p.intended === intended) &&
-               (!spec || p.specialty === spec);
+      const cTb = document.querySelector('#clientTable tbody');
+      cTb.innerHTML = '';
+      clients.forEach((c, idx) => {
+        const cleanPhone = c.phone.replace(/\D/g, '');
+        cTb.innerHTML += `<tr>
+          <td>${c.id}</td><td>${c.name}</td><td>${c.phone}</td>
+          <td class="action-btns">
+            <a href="tel:${cleanPhone}" class="btn-call">📞 Call</a>
+            <a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+          </td>
+          <td>${c.intended}</td><td>${c.status}</td>
+        </tr>`;
       });
 
-      const resDiv = document.getElementById('match-results');
-      if (matches.length === 0) {
-        resDiv.innerHTML = `<p style="color:#ef4444; font-weight:bold;">No matching properties found for selected criteria.</p>`;
-      } else {
-        resDiv.innerHTML = `<h3>Matches Found (${matches.length})</h3>` + matches.map(p => {
-          const rawPhone = cleanPhone(p.phone);
-          const waMsg = encodeURIComponent(`Hello ${p.keyman}, regarding Property ID: ${p.id} in ${p.location}.`);
-          return `
-            <div class="match-card">
-              <h4>Property ${p.id} - ${p.location} (${p.status})</h4>
-              <p><b>Key Man:</b> ${p.keyman} (${p.phone})</p>
-              <p><b>Use:</b> ${p.intended} | <b>Specialty:</b> ${p.specialty}</p>
-              <p><b>Size:</b> ${p.size} ${p.size_unit} | <b>Price:</b> ₹${p.price} ${p.price_unit}</p>
-              <p><b>Infrastructure:</b> Road: ${p.road || 'N/A'}, Water: ${p.water || 'N/A'}, Elec: ${p.elec || 'N/A'}</p>
-              <p><b>Owner Docs:</b> ${p.owner_details || 'None specified'}</p>
-              <p><b>Verified:</b> ${p.verified || 'NO'} | <b>Photos/Videos:</b> ${p.media || 'NO'} | <b>Google Map Location:</b> ${p.gloc || 'NO'}</p>
-              <div class="action-btns" style="margin-top:8px;">
-                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call Key Man</a>
-                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp Key Man</a>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
+      const pTb = document.querySelector('#propTable tbody');
+      pTb.innerHTML = '';
+      properties.forEach((p, idx) => {
+        const cleanPhone = p.phone.replace(/\D/g, '');
+        pTb.innerHTML += `<tr>
+          <td>${p.id}</td><td>${p.keyman}</td><td>${p.phone}</td>
+          <td class="action-btns">
+            <a href="tel:${cleanPhone}" class="btn-call">📞 Call</a>
+            <a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+          </td>
+          <td>${p.intended}</td><td>${p.status}</td>
+        </tr>`;
+      });
     }
 
-    fetchDataFromCloud();
+    renderData();
   </script>
 </body>
 </html>
