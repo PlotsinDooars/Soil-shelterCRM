@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil & Shelter CRM</title>
+  <style>
+    :root {
+      --primary: #2d5a27;
+      --primary-dark: #1b3818;
+      --accent: #d97706;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 30px; }
+    
+    header { background-color: var(--primary); color: white; padding: 15px 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.5rem; letter-spacing: 1px; }
+    header p { font-size: 0.85rem; opacity: 0.9; }
+
+    nav { display: flex; overflow-x: auto; background: var(--primary-dark); padding: 5px; gap: 5px; }
+    nav button { flex: 1; min-width: 110px; padding: 10px; border: none; background: transparent; color: white; font-weight: 600; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
+    nav button.active { background: var(--accent); }
+
+    .container { max-width: 1100px; margin: 15px auto; padding: 0 10px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Dashboard Metrics */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .metric-card { background: var(--card-bg); padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
+    .metric-card h3 { font-size: 0.9rem; color: #6b7280; text-transform: uppercase; margin-bottom: 5px; }
+    .metric-card p { font-size: 2rem; font-weight: bold; color: var(--primary-dark); }
+
+    /* Form Styles */
+    .form-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .form-card h2 { margin-bottom: 15px; color: var(--primary); font-size: 1.2rem; border-bottom: 2px solid var(--bg); padding-bottom: 5px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    label { font-size: 0.8rem; font-weight: 600; color: #4b5563; }
+    input, select, textarea { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); }
+    
+    .btn { background: var(--primary); color: white; padding: 10px 18px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); }
+
+    /* Tables */
+    .table-container { background: var(--card-bg); border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    th { background: #f9fafb; padding: 10px; border-bottom: 2px solid var(--border); color: #374151; }
+    td { padding: 10px; border-bottom: 1px solid var(--border); }
+    tr:hover { background: #f9fafb; }
+    .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
+    .badge-available { background: #d1fae5; color: #065f46; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+
+    /* Matchmaker Results Card */
+    .match-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 12px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SOIL & SHELTER</h1>
+    <p>YOUR PROPERTY CONSULTANT - CRM</p>
+  </header>
+
+  <nav>
+    <button class="active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button onclick="switchTab('add-client')">+ Add Client</button>
+    <button onclick="switchTab('add-property')">+ Add Property</button>
+    <button onclick="switchTab('clients')">Clients List</button>
+    <button onclick="switchTab('properties')">Plots List</button>
+    <button onclick="switchTab('matchmaker')">🔍 Matchmaker</button>
+  </nav>
+
+  <div class="container">
+
+    <!-- DASHBOARD TAB -->
+    <div id="dashboard" class="tab-content active">
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <h3>Call Dues Today</h3>
+          <p id="metric-call-dues">0</p>
+        </div>
+        <div class="metric-card">
+          <h3>Available Plots</h3>
+          <p id="metric-available-plots">0</p>
+        </div>
+        <div class="metric-card">
+          <h3>Active Clients</h3>
+          <p id="metric-active-clients">0</p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>⏰ Follow-Up Calls Due Today</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Client ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Next Follow Up</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="dues-table-body">
+              <tr><td colspan="6" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD CLIENT TAB -->
+    <div id="add-client" class="tab-content">
+      <div class="form-card">
+        <h2>Add New Client</h2>
+        <form id="clientForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" id="c_date" required>
+            </div>
+            <div class="form-group">
+              <label>Client ID (Auto)</label>
+              <input type="text" id="c_id" readonly style="background: #e5e7eb;">
+            </div>
+            <div class="form-group">
+              <label>Client Name</label>
+              <input type="text" id="c_name" required placeholder="e.g. Rahul Roy">
+            </div>
+            <div class="form-group">
+              <label>Phone Number (with country code)</label>
+              <input type="tel" id="c_phone" required placeholder="+91 9876543210">
+            </div>
+            <div class="form-group full-width">
+              <label>Address</label>
+              <input type="text" id="c_address" placeholder="Client home/office address">
+            </div>
+
+            <div class="form-group">
+              <label>Intended Use</label>
+              <select id="c_intended" required>
+                <option value="">Select Intended Use</option>
+                <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
+                <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
+                <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
+                <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
+                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Specialty</label>
+              <select id="c_specialty" required>
+                <option value="">Select Specialty</option>
+                <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
+                <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
+                <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
+                <option>PADDY FIELD</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Area Category</label>
+              <select id="c_area_cat" required>
+                <option>PLAIN AREA</option><option>HILLS AREA</option><option>BOTH AREA</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Owner Category</label>
+              <select id="c_owner_cat" required>
+                <option>GENERAL</option><option>TRIBAL</option><option>BOTH</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Plot Location</label>
+              <select id="c_location" required>
+                <option value="">Select Location</option>
+                <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
+                <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
+                <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
+                <option>DARJEELING</option><option>LAVA</option><option>CHUIKHIM</option><option>RESOP</option>
+                <option>LOLEGAON</option><option>SAMSING</option><option>JHALONG</option><option>CHILAPATA</option>
+                <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
+                <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
+                <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
+                <option>NAXALBARI</option><option>MATIGARA</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Min Size & Unit</label>
+              <div style="display:flex; gap:5px;">
+                <input type="number" id="c_min_size" placeholder="Min">
+                <select id="c_size_unit">
+                  <option>DECIMAL</option><option>ACRE</option><option>KATTHA</option><option>BIGHA</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Max Size</label>
+              <input type="number" id="c_max_size" placeholder="Max">
+            </div>
+
+            <div class="form-group">
+              <label>Budget Range (Min - Max)</label>
+              <div style="display:flex; gap:5px;">
+                <input type="number" id="c_min_budget" placeholder="Min ₹">
+                <input type="number" id="c_max_budget" placeholder="Max ₹">
+                <select id="c_budget_unit">
+                  <option>THOUSAND</option><option>LAKH</option><option>CRORE</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Next Follow Up Date</label>
+              <input type="date" id="c_followup" required>
+            </div>
+
+            <div class="form-group">
+              <label>Status</label>
+              <select id="c_status">
+                <option>NEW</option><option>INTERESTED</option><option>NOT INTERESTED</option>
+                <option>FINAL</option><option>FOLLOW UP</option><option>CONVERTED</option><option>DEAL CLOSE</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Remarks</label>
+              <textarea id="c_remarks" rows="2" placeholder="Notes on client preferences..."></textarea>
+            </div>
+          </div>
+          <br>
+          <button type="submit" class="btn">Save Client</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ADD PROPERTY TAB -->
+    <div id="add-property" class="tab-content">
+      <div class="form-card">
+        <h2>Add New Property</h2>
+        <form id="propertyForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Date Listed</label>
+              <input type="date" id="p_date" required>
+            </div>
+            <div class="form-group">
+              <label>Property ID (Auto)</label>
+              <input type="text" id="p_id" readonly style="background: #e5e7eb;">
+            </div>
+            <div class="form-group">
+              <label>Key Man Name</label>
+              <input type="text" id="p_keyman" required placeholder="Contact/Owner Name">
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="p_phone" required placeholder="+91 9876543210">
+            </div>
+
+            <div class="form-group">
+              <label>Intended Use</label>
+              <select id="p_intended" required>
+                <option value="">Select Intended Use</option>
+                <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
+                <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
+                <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
+                <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
+                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Specialty</label>
+              <select id="p_specialty" required>
+                <option value="">Select Specialty</option>
+                <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
+                <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
+                <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
+                <option>PADDY FIELD</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Area Category</label>
+              <select id="p_area_cat" required>
+                <option>PLAIN AREA</option><option>HILLS AREA</option><option>BOTH AREA</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Owner Category</label>
+              <select id="p_owner_cat" required>
+                <option>GENERAL</option><option>TRIBAL</option><option>BOTH</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Plot Location</label>
+              <select id="p_location" required>
+                <option value="">Select Location</option>
+                <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
+                <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
+                <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
+                <option>DARJEELING</option><option>LAVA</option><option>CHUIKHIM</option><option>RESOP</option>
+                <option>LOLEGAON</option><option>SAMSING</option><option>JHALONG</option><option>CHILAPATA</option>
+                <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
+                <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
+                <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
+                <option>NAXALBARI</option><option>MATIGARA</option><option>OTHERS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Plot Size & Unit</label>
+              <div style="display:flex; gap:5px;">
+                <input type="number" id="p_size" required placeholder="Size">
+                <select id="p_size_unit">
+                  <option>DECIMAL</option><option>ACRE</option><option>KATTHA</option><option>BIGHA</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Asking / Sale Price & Unit</label>
+              <div style="display:flex; gap:5px;">
+                <input type="number" id="p_price" required placeholder="Price ₹">
+                <select id="p_price_unit">
+                  <option>THOUSAND</option><option>LAKH</option><option>CRORE</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Status</label>
+              <select id="p_status">
+                <option>AVAILABLE</option><option>SOLD</option><option>HOLD</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Address of Property</label>
+              <input type="text" id="p_address" placeholder="Detailed property address">
+            </div>
+
+            <div class="form-group full-width">
+              <label>Remarks (Owner Rate, Agent Rate, Notes)</label>
+              <textarea id="p_remarks" rows="2"></textarea>
+            </div>
+          </div>
+          <br>
+          <button type="submit" class="btn">Save Property</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- CLIENTS LIST TAB -->
+    <div id="clients" class="tab-content">
+      <div class="form-card">
+        <h2>All Clients</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Client ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Intended Use</th>
+                <th>Location</th>
+                <th>Budget</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="clients-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROPERTIES LIST TAB -->
+    <div id="properties" class="tab-content">
+      <div class="form-card">
+        <h2>All Listed Properties</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Property ID</th>
+                <th>Key Man</th>
+                <th>Phone</th>
+                <th>Location</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="properties-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATCHMAKER TAB -->
+    <div id="matchmaker" class="tab-content">
+      <div class="form-card">
+        <h2>🎯 Client - Property Matchmaker Engine</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Location Filter</label>
+            <select id="m_location">
+              <option value="">ALL LOCATIONS</option>
+              <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
+              <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
+              <option>MURTI</option><option>LATAGURI</option><option>KRANTI</option><option>KALIMPONG</option>
+              <option>DARJEELING</option><option>GAJOLDOBA</option><option>SILIGURI</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Intended Use Filter</label>
+            <select id="m_intended">
+              <option value="">ALL USES</option>
+              <option>RESIDENT</option><option>FARMHOUSE</option><option>INVESTMENT</option>
+              <option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option><option>TEA PLANTATION</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Specialty Filter</label>
+            <select id="m_specialty">
+              <option value="">ALL SPECIALTIES</option>
+              <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option>
+              <option>NH 17 SIDE</option><option>FOREST SIDE</option>
+            </select>
+          </div>
+        </div>
+        <br>
+        <button class="btn btn-accent" onclick="runMatchmaker()">Run Matchmaker Engine</button>
+        
+        <div id="match-results" style="margin-top:20px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Local Data Storage (Simulating Cloud Sync)
+    let clients = JSON.parse(localStorage.getItem('ss_clients')) || [];
+    let properties = JSON.parse(localStorage.getItem('ss_properties')) || [];
+
+    // Set Default Dates
+    document.getElementById('c_date').valueAsDate = new Date();
+    document.getElementById('p_date').valueAsDate = new Date();
+    document.getElementById('c_followup').valueAsDate = new Date();
+
+    function updateIDs() {
+      document.getElementById('c_id').value = 'C' + (clients.length + 1);
+      document.getElementById('p_id').value = 'P' + (properties.length + 1);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+      renderData();
+    }
+
+    // Add Client
+    document.getElementById('clientForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newClient = {
+        id: document.getElementById('c_id').value,
+        name: document.getElementById('c_name').value,
+        phone: document.getElementById('c_phone').value,
+        address: document.getElementById('c_address').value,
+        intended: document.getElementById('c_intended').value,
+        specialty: document.getElementById('c_specialty').value,
+        area_cat: document.getElementById('c_area_cat').value,
+        owner_cat: document.getElementById('c_owner_cat').value,
+        location: document.getElementById('c_location').value,
+        min_size: document.getElementById('c_min_size').value,
+        max_size: document.getElementById('c_max_size').value,
+        size_unit: document.getElementById('c_size_unit').value,
+        min_budget: document.getElementById('c_min_budget').value,
+        max_budget: document.getElementById('c_max_budget').value,
+        budget_unit: document.getElementById('c_budget_unit').value,
+        followup: document.getElementById('c_followup').value,
+        status: document.getElementById('c_status').value,
+        remarks: document.getElementById('c_remarks').value
+      };
+      clients.push(newClient);
+      localStorage.setItem('ss_clients', JSON.stringify(clients));
+      alert('Client Added Successfully!');
+      this.reset();
+      updateIDs();
+      renderData();
+    });
+
+    // Add Property
+    document.getElementById('propertyForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newProp = {
+        id: document.getElementById('p_id').value,
+        keyman: document.getElementById('p_keyman').value,
+        phone: document.getElementById('p_phone').value,
+        intended: document.getElementById('p_intended').value,
+        specialty: document.getElementById('p_specialty').value,
+        area_cat: document.getElementById('p_area_cat').value,
+        owner_cat: document.getElementById('p_owner_cat').value,
+        location: document.getElementById('p_location').value,
+        size: document.getElementById('p_size').value,
+        size_unit: document.getElementById('p_size_unit').value,
+        price: document.getElementById('p_price').value,
+        price_unit: document.getElementById('p_price_unit').value,
+        status: document.getElementById('p_status').value,
+        address: document.getElementById('p_address').value,
+        remarks: document.getElementById('p_remarks').value
+      };
+      properties.push(newProp);
+      localStorage.setItem('ss_properties', JSON.stringify(properties));
+      alert('Property Added Successfully!');
+      this.reset();
+      updateIDs();
+      renderData();
+    });
+
+    function renderData() {
+      updateIDs();
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      // Call dues
+      const dues = clients.filter(c => c.followup === todayStr);
+      document.getElementById('metric-call-dues').innerText = dues.length;
+      document.getElementById('metric-available-plots').innerText = properties.filter(p => p.status === 'AVAILABLE').length;
+      document.getElementById('metric-active-clients').innerText = clients.filter(c => c.status !== 'DEAL CLOSE' && c.status !== 'NOT INTERESTED').length;
+
+      // Render Dues Table
+      const duesBody = document.getElementById('dues-table-body');
+      if (dues.length === 0) {
+        duesBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>`;
+      } else {
+        duesBody.innerHTML = dues.map(c => `
+          <tr>
+            <td><b>${c.id}</b></td>
+            <td>${c.name}</td>
+            <td><a href="tel:${c.phone}">${c.phone}</a></td>
+            <td><span class="badge badge-pending">${c.status}</span></td>
+            <td>${c.followup}</td>
+            <td>${c.remarks || '-'}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Render Clients Table
+      document.getElementById('clients-list-body').innerHTML = clients.map(c => `
+        <tr>
+          <td><b>${c.id}</b></td>
+          <td>${c.name}</td>
+          <td><a href="tel:${c.phone}">${c.phone}</a></td>
+          <td>${c.intended}</td>
+          <td>${c.location}</td>
+          <td>₹${c.min_budget}-${c.max_budget} ${c.budget_unit}</td>
+          <td><span class="badge badge-pending">${c.status}</span></td>
+        </tr>
+      `).join('');
+
+      // Render Properties Table
+      document.getElementById('properties-list-body').innerHTML = properties.map(p => `
+        <tr>
+          <td><b>${p.id}</b></td>
+          <td>${p.keyman}</td>
+          <td><a href="tel:${p.phone}">${p.phone}</a></td>
+          <td>${p.location}</td>
+          <td>${p.size} ${p.size_unit}</td>
+          <td>₹${p.price} ${p.price_unit}</td>
+          <td><span class="badge badge-available">${p.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function runMatchmaker() {
+      const loc = document.getElementById('m_location').value;
+      const intended = document.getElementById('m_intended').value;
+      const spec = document.getElementById('m_specialty').value;
+
+      const matches = properties.filter(p => {
+        return (!loc || p.location === loc) &&
+               (!intended || p.intended === intended) &&
+               (!spec || p.specialty === spec);
+      });
+
+      const resDiv = document.getElementById('match-results');
+      if (matches.length === 0) {
+        resDiv.innerHTML = `<p style="color:#ef4444; font-weight:bold;">No matching properties found for selected criteria.</p>`;
+      } else {
+        resDiv.innerHTML = `<h3>Matches Found (${matches.length})</h3>` + matches.map(p => `
+          <div class="match-card">
+            <h4>Property ${p.id} - ${p.location} (${p.status})</h4>
+            <p><b>Key Man:</b> ${p.keyman} (${p.phone})</p>
+            <p><b>Use:</b> ${p.intended} | <b>Specialty:</b> ${p.specialty}</p>
+            <p><b>Size:</b> ${p.size} ${p.size_unit} | <b>Price:</b> ₹${p.price} ${p.price_unit}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Initial Load
+    renderData();
+  </script>
+</body>
+</html>
