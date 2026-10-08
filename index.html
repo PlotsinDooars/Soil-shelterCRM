@@ -24,7 +24,7 @@
     /* NAVIGATION BAR */
     .nav-bar { background: #E8ECEF; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: inset 0 -1px 2px rgba(0,0,0,0.05); }
     .nav-links { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .nav-item { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #444; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: none; background: transparent; }
+    .nav-item { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #444; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; }
     .nav-item:hover { background-color: #DCE2E6; }
     .nav-item.active { background-color: #0B5C3E; color: white; }
     .nav-btn-add { background-color: #0B5C3E; color: white; padding: 8px 14px; border-radius: 8px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
@@ -65,9 +65,7 @@
     .fu-item { background: #FFF5F5; border: 1px solid #FFE0E0; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
     .fu-info h5 { font-size: 13px; color: #C0392B; font-weight: 700; }
     .fu-info p { font-size: 11px; color: #7F8C8D; margin-top: 2px; }
-    .fu-actions { display: flex; gap: 6px; }
     .btn-sm-call { background: #27AE60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; }
-    .btn-sm-details { background: #ECF0F1; color: #2C3E50; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; }
 
     /* BOTTOM EXCEL CARD */
     .excel-card { background: white; border-radius: 12px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #E5E9EC; }
@@ -80,11 +78,15 @@
     .tab-view.active { display: block; }
 
     /* FORM & TABLE STYLES */
-    .form-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #E5E9EC; max-width: 650px; margin: 0 auto; }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; }
-    .btn-save { background-color: #0B5C3E; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; width: 100%; margin-top: 10px; }
+    .form-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #E5E9EC; max-width: 750px; margin: 0 auto; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #333; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; }
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; background: #F8FAFC; padding: 12px; border-radius: 6px; border: 1px solid #E2E8F0; }
+    .checkbox-grid label { font-weight: 500; font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .inline-inputs { display: flex; gap: 10px; }
+    .inline-inputs input, .inline-inputs select { flex: 1; }
+    .btn-save { background-color: #0B5C3E; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px; width: 100%; margin-top: 15px; }
     
     table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 15px; }
     th, td { padding: 12px; text-align: left; font-size: 13px; border-bottom: 1px solid #EEF2F5; }
@@ -134,8 +136,6 @@
 
     <!-- VIEW 1: DASHBOARD -->
     <div id="dashboard-view" class="tab-view active">
-      
-      <!-- CLOUD SYNC BANNER -->
       <div class="sync-banner">
         <div class="sync-banner-left">
           <div class="sync-banner-icon">👥</div>
@@ -147,7 +147,6 @@
         <div id="sync-status" style="font-weight:700; color:#7CE0A8; font-size:13px;">✅ Live Cloud Synced</div>
       </div>
 
-      <!-- QUICK ACCESS CARDS -->
       <div class="quick-grid">
         <div class="quick-card" onclick="switchTab('add-client-view')">
           <div class="qc-icon qc-green">👤</div>
@@ -179,7 +178,6 @@
         </div>
       </div>
 
-      <!-- MIDDLE WIDGETS -->
       <div class="middle-grid">
         <div class="matchmaker-card">
           <div>
@@ -208,7 +206,6 @@
         </div>
       </div>
 
-      <!-- BOTTOM EXCEL DOWNLOAD CARD -->
       <div class="excel-card">
         <div class="excel-left">
           <div class="excel-icon">📊</div>
@@ -219,7 +216,6 @@
         </div>
         <button class="btn-export" onclick="exportExcel()">📥 Export Dataset</button>
       </div>
-
     </div>
 
     <!-- VIEW 2: CLIENTS DIRECTORY -->
@@ -251,28 +247,146 @@
     <!-- VIEW 4: ADD CLIENT FORM -->
     <div id="add-client-view" class="tab-view">
       <div class="form-card">
-        <h2 style="margin-bottom:15px; font-size:18px;">Add / Edit Client</h2>
+        <h2 style="margin-bottom:15px; font-size:18px;">Add New Client</h2>
         <form id="clientForm">
           <input type="hidden" id="c_edit_index" value="-1">
-          <div class="form-group"><label>Client ID</label><input type="text" id="c_id" required placeholder="#1001"></div>
-          <div class="form-group"><label>Date</label><input type="date" id="c_date" required></div>
-          <div class="form-group"><label>Name</label><input type="text" id="c_name" required></div>
-          <div class="form-group"><label>Phone</label><input type="tel" id="c_phone" required></div>
-          <div class="form-group"><label>Address</label><input type="text" id="c_address"></div>
-          <div class="form-group"><label>Intended Use</label><input type="text" id="c_intended" placeholder="Residential / Commercial / Agricultural"></div>
-          <div class="form-group"><label>Specialty</label><input type="text" id="c_specialty" placeholder="Plot / Flat / Villa"></div>
-          <div class="form-group"><label>Location Preference</label><input type="text" id="c_location"></div>
-          <div class="form-group"><label>Max Budget</label><input type="number" id="c_max_budget"></div>
-          <div class="form-group"><label>Next Follow Up Date</label><input type="date" id="c_followup"></div>
-          <div class="form-group"><label>Status</label>
-            <select id="c_status">
-              <option value="Active">Active</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Closed">Closed</option>
+          <div class="form-group"><label>1. DATE</label><input type="date" id="c_date" required></div>
+          <div class="form-group"><label>2. CLIENT ID</label><input type="text" id="c_id" required readonly style="background:#f0f0f0;"></div>
+          <div class="form-group"><label>3. CLIENT NAME</label><input type="text" id="c_name" required placeholder="Full Name"></div>
+          <div class="form-group"><label>4. PHONE NO</label><input type="tel" id="c_phone" required placeholder="+91XXXXXXXXXX"></div>
+          <div class="form-group"><label>5. ADDRESS OF CLIENT</label><input type="text" id="c_address" placeholder="Residential Address"></div>
+          
+          <div class="form-group">
+            <label>6. INTENDED USE (Choose One or More)</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="c_intended" value="RESIDENT"> RESIDENT</label>
+              <label><input type="checkbox" name="c_intended" value="FARMHOUSE"> FARMHOUSE</label>
+              <label><input type="checkbox" name="c_intended" value="SECOND HOME"> SECOND HOME</label>
+              <label><input type="checkbox" name="c_intended" value="INVESTMENT"> INVESTMENT</label>
+              <label><input type="checkbox" name="c_intended" value="HOUSHING PROJECT"> HOUSHING PROJECT</label>
+              <label><input type="checkbox" name="c_intended" value="RESORT"> RESORT</label>
+              <label><input type="checkbox" name="c_intended" value="HOMESTAY"> HOMESTAY</label>
+              <label><input type="checkbox" name="c_intended" value="HOTEL"> HOTEL</label>
+              <label><input type="checkbox" name="c_intended" value="RESTURENT"> RESTURENT</label>
+              <label><input type="checkbox" name="c_intended" value="FACTORY"> FACTORY</label>
+              <label><input type="checkbox" name="c_intended" value="FARMING"> FARMING</label>
+              <label><input type="checkbox" name="c_intended" value="TEA PLANTATION"> TEA PLANTATION</label>
+              <label><input type="checkbox" name="c_intended" value="POULTRY FARMING"> POULTRY FARMING</label>
+              <label><input type="checkbox" name="c_intended" value="HATACHERY"> HATACHERY</label>
+              <label><input type="checkbox" name="c_intended" value="AYURVEDA"> AYURVEDA</label>
+              <label><input type="checkbox" name="c_intended" value="FISHARY"> FISHARY</label>
+              <label><input type="checkbox" name="c_intended" value="SCHOOL"> SCHOOL</label>
+              <label><input type="checkbox" name="c_intended" value="HOSPITAL"> HOSPITAL</label>
+              <label><input type="checkbox" name="c_intended" value="ASHRAM"> ASHRAM</label>
+              <label><input type="checkbox" name="c_intended" value="AGRICULTURE"> AGRICULTURE</label>
+              <label><input type="checkbox" name="c_intended" value="OTHERS" onchange="toggleCheckOther(this, 'c_intended_other_div')"> OTHERS</label>
+            </div>
+          </div>
+          <div class="form-group" id="c_intended_other_div" style="display:none;"><label>SPECIFY OTHER INTENDED USE</label><input type="text" id="c_intended_other"></div>
+
+          <div class="form-group">
+            <label>7. SPECIALTY (Choose One or More)</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="c_specialty" value="HILL VIEW"> HILL VIEW</label>
+              <label><input type="checkbox" name="c_specialty" value="KJ VIEW"> KJ VIEW</label>
+              <label><input type="checkbox" name="c_specialty" value="RIVER SIDE"> RIVER SIDE</label>
+              <label><input type="checkbox" name="c_specialty" value="NH 17 SIDE"> NH 17 SIDE</label>
+              <label><input type="checkbox" name="c_specialty" value="NH 717 SIDE"> NH 717 SIDE</label>
+              <label><input type="checkbox" name="c_specialty" value="REMOTE AREA"> REMOTE AREA</label>
+              <label><input type="checkbox" name="c_specialty" value="BAZAR AREA"> BAZAR AREA</label>
+              <label><input type="checkbox" name="c_specialty" value="FOREST SIDE"> FOREST SIDE</label>
+              <label><input type="checkbox" name="c_specialty" value="DONBOSKO AREA"> DONBOSKO AREA</label>
+              <label><input type="checkbox" name="c_specialty" value="HIGH LAND"> HIGH LAND</label>
+              <label><input type="checkbox" name="c_specialty" value="UP & DOWN LAND"> UP & DOWN LAND</label>
+              <label><input type="checkbox" name="c_specialty" value="SWAMP LAND"> SWAMP LAND</label>
+              <label><input type="checkbox" name="c_specialty" value="PADDY FIELD"> PADDY FIELD</label>
+              <label><input type="checkbox" name="c_specialty" value="OTHERS" onchange="toggleCheckOther(this, 'c_specialty_other_div')"> OTHERS</label>
+            </div>
+          </div>
+          <div class="form-group" id="c_specialty_other_div" style="display:none;"><label>SPECIFY OTHER SPECIALTY</label><input type="text" id="c_specialty_other"></div>
+
+          <div class="form-group">
+            <label>8. AREA CATEGORY</label>
+            <select id="c_area_cat">
+              <option value="PLAIN AREA">PLAIN AREA</option>
+              <option value="HILLS AREA">HILLS AREA</option>
+              <option value="BOTH AREA">BOTH AREA</option>
             </select>
           </div>
-          <div class="form-group"><label>Remarks</label><textarea id="c_remarks"></textarea></div>
-          <button type="submit" class="btn-save">Save Client</button>
+
+          <div class="form-group">
+            <label>9. OWNER CATEGORY</label>
+            <select id="c_owner_cat">
+              <option value="GENERAL">GENERAL</option>
+              <option value="TRIBEL">TRIBEL</option>
+              <option value="BOTH">BOTH</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>10. PLOT LOCATION</label>
+            <select id="c_location" onchange="toggleSelectOther(this, 'c_location_other_div')">
+              <option value="OODLABARI">OODLABARI</option><option value="DON BOSKO">DON BOSKO</option><option value="TURIBARI">TURIBARI</option>
+              <option value="MANABARI">MANABARI</option><option value="P DAMDIM">P DAMDIM</option><option value="MALBAZAR">MALBAZAR</option>
+              <option value="BORODIGHI">BORODIGHI</option><option value="CHALSHA">CHALSHA</option><option value="MURTI">MURTI</option>
+              <option value="LATAGURI">LATAGURI</option><option value="KRANTI">KRANTI</option><option value="KALIMPONG">KALIMPONG</option>
+              <option value="DARJEELING">DARJEELING</option><option value="LAVA">LAVA</option><option value="CHUIKHIM">CHUIKHIM</option>
+              <option value="RESOP">RESOP</option><option value="LOLEGAON">LOLEGAON</option><option value="SAMSING">SAMSING</option>
+              <option value="JHALONG">JHALONG</option><option value="CHILAPATA">CHILAPATA</option><option value="BELAKOBA">BELAKOBA</option>
+              <option value="SHALBARI">SHALBARI</option><option value="MANJING">MANJING</option><option value="JHANDI">JHANDI</option>
+              <option value="NOKDARA">NOKDARA</option><option value="SAMTHAR">SAMTHAR</option><option value="PUBUNG">PUBUNG</option>
+              <option value="PANBU">PANBU</option><option value="CHARKHOL">CHARKHOL</option><option value="SINGJEE">SINGJEE</option>
+              <option value="GAJOLDOBA">GAJOLDOBA</option><option value="SILIGURI">SILIGURI</option><option value="NAXALBARI">NAXALBARI</option>
+              <option value="MATIGARA">MATIGARA</option><option value="OTHERS">OTHERS</option>
+            </select>
+          </div>
+          <div class="form-group" id="c_location_other_div" style="display:none;"><label>SPECIFY OTHER LOCATION</label><input type="text" id="c_location_other"></div>
+
+          <div class="form-group">
+            <label>11. PLOT SIZE & UNIT</label>
+            <div class="inline-inputs">
+              <input type="number" id="c_min_size" placeholder="Min Size">
+              <input type="number" id="c_max_size" placeholder="Max Size">
+              <select id="c_size_unit">
+                <option value="DECIMAL">DECIMAL</option>
+                <option value="ACRE">ACRE</option>
+                <option value="KATTHA">KATTHA</option>
+                <option value="BIGHA">BIGHA</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>12. BUDGET</label>
+            <div class="inline-inputs">
+              <input type="number" id="c_min_budget" placeholder="Min ₹">
+              <input type="number" id="c_max_budget" placeholder="Max ₹">
+              <select id="c_budget_unit">
+                <option value="THOUSAND">THOUSAND</option>
+                <option value="LAKH">LAKH</option>
+                <option value="CRORE">CRORE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group"><label>13. NEXT FOLLOW UP DATE</label><input type="date" id="c_followup"></div>
+
+          <div class="form-group">
+            <label>14. STATUS</label>
+            <select id="c_status">
+              <option value="NEW">NEW</option>
+              <option value="INTERESTED">INTERESTED</option>
+              <option value="NOT INTERESTED">NOT INTERESTED</option>
+              <option value="FINAL">FINAL</option>
+              <option value="FOLLOW UP">FOLLOW UP</option>
+              <option value="CONVERTED">CONVERTED</option>
+              <option value="DEAL CLOSE">DEAL CLOSE</option>
+            </select>
+          </div>
+
+          <div class="form-group"><label>15. REMARKS</label><textarea id="c_remarks" rows="3"></textarea></div>
+
+          <button type="submit" class="btn-save">Save Client Record</button>
         </form>
       </div>
     </div>
@@ -280,27 +394,175 @@
     <!-- VIEW 5: ADD PROPERTY FORM -->
     <div id="add-prop-view" class="tab-view">
       <div class="form-card">
-        <h2 style="margin-bottom:15px; font-size:18px;">Add / Edit Property</h2>
+        <h2 style="margin-bottom:15px; font-size:18px;">Add New Property</h2>
         <form id="propertyForm">
           <input type="hidden" id="p_edit_index" value="-1">
-          <div class="form-group"><label>Property ID</label><input type="text" id="p_id" required placeholder="#3001"></div>
-          <div class="form-group"><label>Date Listed</label><input type="date" id="p_date" required></div>
-          <div class="form-group"><label>Key Man / Contact Person</label><input type="text" id="p_keyman"></div>
-          <div class="form-group"><label>Phone</label><input type="tel" id="p_phone" required></div>
-          <div class="form-group"><label>Intended Use</label><input type="text" id="p_intended"></div>
-          <div class="form-group"><label>Specialty</label><input type="text" id="p_specialty"></div>
-          <div class="form-group"><label>Location</label><input type="text" id="p_location"></div>
-          <div class="form-group"><label>Size</label><input type="text" id="p_size"></div>
-          <div class="form-group"><label>Price</label><input type="number" id="p_price"></div>
-          <div class="form-group"><label>Status</label>
-            <select id="p_status">
-              <option value="Available">Available</option>
-              <option value="Pending">Pending</option>
-              <option value="Sold">Sold</option>
+          <div class="form-group"><label>1. DATE LISTED</label><input type="date" id="p_date" required></div>
+          <div class="form-group"><label>2. PROPERTY ID</label><input type="text" id="p_id" required readonly style="background:#f0f0f0;"></div>
+          <div class="form-group"><label>3. KEY MAN NAME</label><input type="text" id="p_keyman" required placeholder="Key Man Name"></div>
+          <div class="form-group"><label>4. PHONE NUMBER</label><input type="tel" id="p_phone" required placeholder="+91XXXXXXXXXX"></div>
+
+          <div class="form-group">
+            <label>5. INTENDED USE (Choose One or More)</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="p_intended" value="RESIDENT"> RESIDENT</label>
+              <label><input type="checkbox" name="p_intended" value="FARMHOUSE"> FARMHOUSE</label>
+              <label><input type="checkbox" name="p_intended" value="SECOND HOME"> SECOND HOME</label>
+              <label><input type="checkbox" name="p_intended" value="INVESTMENT"> INVESTMENT</label>
+              <label><input type="checkbox" name="p_intended" value="HOUSHING PROJECT"> HOUSHING PROJECT</label>
+              <label><input type="checkbox" name="p_intended" value="RESORT"> RESORT</label>
+              <label><input type="checkbox" name="p_intended" value="HOMESTAY"> HOMESTAY</label>
+              <label><input type="checkbox" name="p_intended" value="HOTEL"> HOTEL</label>
+              <label><input type="checkbox" name="p_intended" value="RESTURENT"> RESTURENT</label>
+              <label><input type="checkbox" name="p_intended" value="FACTORY"> FACTORY</label>
+              <label><input type="checkbox" name="p_intended" value="FARMING"> FARMING</label>
+              <label><input type="checkbox" name="p_intended" value="TEA PLANTATION"> TEA PLANTATION</label>
+              <label><input type="checkbox" name="p_intended" value="POULTRY FARMING"> POULTRY FARMING</label>
+              <label><input type="checkbox" name="p_intended" value="HATACHERY"> HATACHERY</label>
+              <label><input type="checkbox" name="p_intended" value="AYURVEDA"> AYURVEDA</label>
+              <label><input type="checkbox" name="p_intended" value="FISHARY"> FISHARY</label>
+              <label><input type="checkbox" name="p_intended" value="SCHOOL"> SCHOOL</label>
+              <label><input type="checkbox" name="p_intended" value="HOSPITAL"> HOSPITAL</label>
+              <label><input type="checkbox" name="p_intended" value="ASHRAM"> ASHRAM</label>
+              <label><input type="checkbox" name="p_intended" value="AGRICULTURE"> AGRICULTURE</label>
+              <label><input type="checkbox" name="p_intended" value="OTHERS" onchange="toggleCheckOther(this, 'p_intended_other_div')"> OTHERS</label>
+            </div>
+          </div>
+          <div class="form-group" id="p_intended_other_div" style="display:none;"><label>SPECIFY OTHER INTENDED USE</label><input type="text" id="p_intended_other"></div>
+
+          <div class="form-group">
+            <label>7. SPECIALTY (Choose One or More)</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="p_specialty" value="HILL VIEW"> HILL VIEW</label>
+              <label><input type="checkbox" name="p_specialty" value="KJ VIEW"> KJ VIEW</label>
+              <label><input type="checkbox" name="p_specialty" value="RIVER SIDE"> RIVER SIDE</label>
+              <label><input type="checkbox" name="p_specialty" value="NH 17 SIDE"> NH 17 SIDE</label>
+              <label><input type="checkbox" name="p_specialty" value="NH 717 SIDE"> NH 717 SIDE</label>
+              <label><input type="checkbox" name="p_specialty" value="REMOTE AREA"> REMOTE AREA</label>
+              <label><input type="checkbox" name="p_specialty" value="BAZAR AREA"> BAZAR AREA</label>
+              <label><input type="checkbox" name="p_specialty" value="FOREST SIDE"> FOREST SIDE</label>
+              <label><input type="checkbox" name="p_specialty" value="DONBOSKO AREA"> DONBOSKO AREA</label>
+              <label><input type="checkbox" name="p_specialty" value="HIGH LAND"> HIGH LAND</label>
+              <label><input type="checkbox" name="p_specialty" value="UP & DOWN LAND"> UP & DOWN LAND</label>
+              <label><input type="checkbox" name="p_specialty" value="SWAMP LAND"> SWAMP LAND</label>
+              <label><input type="checkbox" name="p_specialty" value="PADDY FIELD"> PADDY FIELD</label>
+              <label><input type="checkbox" name="p_specialty" value="OTHERS" onchange="toggleCheckOther(this, 'p_specialty_other_div')"> OTHERS</label>
+            </div>
+          </div>
+          <div class="form-group" id="p_specialty_other_div" style="display:none;"><label>SPECIFY OTHER SPECIALTY</label><input type="text" id="p_specialty_other"></div>
+
+          <div class="form-group">
+            <label>8. AREA CATEGORY</label>
+            <select id="p_area_cat">
+              <option value="PLAIN AREA">PLAIN AREA</option>
+              <option value="HILLS AREA">HILLS AREA</option>
+              <option value="BOTH AREA">BOTH AREA</option>
             </select>
           </div>
-          <div class="form-group"><label>Address / Details</label><textarea id="p_address"></textarea></div>
-          <button type="submit" class="btn-save">Save Property</button>
+
+          <div class="form-group">
+            <label>9. OWNER CATEGORY</label>
+            <select id="p_owner_cat">
+              <option value="GENERAL">GENERAL</option>
+              <option value="TRIBEL">TRIBEL</option>
+              <option value="BOTH">BOTH</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>10. PLOT LOCATION</label>
+            <select id="p_location" onchange="toggleSelectOther(this, 'p_location_other_div')">
+              <option value="OODLABARI">OODLABARI</option><option value="DON BOSKO">DON BOSKO</option><option value="TURIBARI">TURIBARI</option>
+              <option value="MANABARI">MANABARI</option><option value="P DAMDIM">P DAMDIM</option><option value="MALBAZAR">MALBAZAR</option>
+              <option value="BORODIGHI">BORODIGHI</option><option value="CHALSHA">CHALSHA</option><option value="MURTI">MURTI</option>
+              <option value="LATAGURI">LATAGURI</option><option value="KRANTI">KRANTI</option><option value="KALIMPONG">KALIMPONG</option>
+              <option value="DARJEELING">DARJEELING</option><option value="LAVA">LAVA</option><option value="CHUIKHIM">CHUIKHIM</option>
+              <option value="RESOP">RESOP</option><option value="LOLEGAON">LOLEGAON</option><option value="SAMSING">SAMSING</option>
+              <option value="JHALONG">JHALONG</option><option value="CHILAPATA">CHILAPATA</option><option value="BELAKOBA">BELAKOBA</option>
+              <option value="SHALBARI">SHALBARI</option><option value="MANJING">MANJING</option><option value="JHANDI">JHANDI</option>
+              <option value="NOKDARA">NOKDARA</option><option value="SAMTHAR">SAMTHAR</option><option value="PUBUNG">PUBUNG</option>
+              <option value="PANBU">PANBU</option><option value="CHARKHOL">CHARKHOL</option><option value="SINGJEE">SINGJEE</option>
+              <option value="GAJOLDOBA">GAJOLDOBA</option><option value="SILIGURI">SILIGURI</option><option value="NAXALBARI">NAXALBARI</option>
+              <option value="MATIGARA">MATIGARA</option><option value="OTHERS">OTHERS</option>
+            </select>
+          </div>
+          <div class="form-group" id="p_location_other_div" style="display:none;"><label>SPECIFY OTHER LOCATION</label><input type="text" id="p_location_other"></div>
+
+          <div class="form-group">
+            <label>11. PLOT SIZE & UNIT</label>
+            <div class="inline-inputs">
+              <input type="number" id="p_size" placeholder="Plot Size">
+              <select id="p_size_unit">
+                <option value="DECIMAL">DECIMAL</option>
+                <option value="ACRE">ACRE</option>
+                <option value="KATTHA">KATTHA</option>
+                <option value="BIGHA">BIGHA</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>12. PRICE DETAILS</label>
+            <div class="inline-inputs">
+              <input type="number" id="p_price" placeholder="Sale Price Digit">
+              <select id="p_price_unit">
+                <option value="THOUSAND">THOUSAND</option>
+                <option value="LAKH">LAKH</option>
+                <option value="CRORE">CRORE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group"><label>13. ADDRESS OF PROPERTY</label><input type="text" id="p_address" placeholder="Property Address"></div>
+
+          <div class="form-group">
+            <label>14. KNOWN OWNER DETAILS AVAILABLE</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="p_owner_details" value="MOBILE NO"> MOBILE NO</label>
+              <label><input type="checkbox" name="p_owner_details" value="ROR PORCHA"> ROR PORCHA</label>
+              <label><input type="checkbox" name="p_owner_details" value="DEEDS"> DEEDS</label>
+              <label><input type="checkbox" name="p_owner_details" value="SITE PLAN"> SITE PLAN</label>
+              <label><input type="checkbox" name="p_owner_details" value="RESIDENT ADDRESS"> RESIDENT ADDRESS</label>
+              <label><input type="checkbox" name="p_owner_details" value="LEGAL HEIR"> LEGAL HEIR</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>15. PLOT INFRASTRUCTURE AVAILABLE</label>
+            <input type="text" id="p_infra_road" placeholder="Road (Type, Width)" style="margin-bottom:6px;">
+            <input type="text" id="p_infra_water" placeholder="Water (Source, Distance)" style="margin-bottom:6px;">
+            <input type="text" id="p_infra_elec" placeholder="Electricity (Nearest Pole Type)">
+          </div>
+
+          <div class="form-group"><label>16. ARISE ANY DISPUTE?</label><input type="text" id="p_dispute" placeholder="Dispute Details if any"></div>
+
+          <div class="form-group">
+            <label>17. TAKEN PHOTO & VIDEO</label>
+            <select id="p_media"><option value="YES">YES</option><option value="NO">NO</option></select>
+          </div>
+
+          <div class="form-group">
+            <label>18. TAKEN GOOGLE LOCATION</label>
+            <select id="p_gloc"><option value="YES">YES</option><option value="NO">NO</option></select>
+          </div>
+
+          <div class="form-group">
+            <label>19. VERIFIED</label>
+            <select id="p_verified"><option value="YES">YES</option><option value="NO">NO</option></select>
+          </div>
+
+          <div class="form-group">
+            <label>20. AVAILABILITY STATUS</label>
+            <select id="p_status">
+              <option value="AVAILABLE">AVAILABLE</option>
+              <option value="SOLD">SOLD</option>
+              <option value="HOLD">HOLD</option>
+            </select>
+          </div>
+
+          <div class="form-group"><label>21. REMARKS (Owner rate, Agent rate, Notes)</label><textarea id="p_remarks" rows="3"></textarea></div>
+
+          <button type="submit" class="btn-save">Save Property Record</button>
         </form>
       </div>
     </div>
@@ -308,7 +570,7 @@
     <!-- VIEW 6: MATCHMAKER -->
     <div id="matchmaker-view" class="tab-view">
       <h2 style="margin-bottom:15px; font-size:18px;">Smart Matchmaker</h2>
-      <p style="font-size:13px; color:#666;">Match buyer budgets & preferences with registered properties automatically.</p>
+      <p style="font-size:13px; color:#666;">Match buyer preferences with registered properties automatically.</p>
     </div>
 
     <!-- VIEW 7: FOLLOWUPS -->
@@ -329,6 +591,11 @@
     document.getElementById('p_date').valueAsDate = new Date();
     document.getElementById('c_followup').valueAsDate = new Date();
 
+    function autoGenIds() {
+      document.getElementById('c_id').value = "C" + (clients.length + 1);
+      document.getElementById('p_id').value = "P" + (properties.length + 1);
+    }
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -340,6 +607,32 @@
       if(activeBtn) activeBtn.classList.add('active');
     }
 
+    function toggleCheckOther(checkbox, divId) {
+      document.getElementById(divId).style.display = checkbox.checked ? 'block' : 'none';
+    }
+
+    function toggleSelectOther(select, divId) {
+      document.getElementById(divId).style.display = select.value === 'OTHERS' ? 'block' : 'none';
+    }
+
+    function getCheckedVals(name, otherDivId, otherInputId) {
+      let vals = Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+      if(vals.includes('OTHERS')) {
+        vals = vals.filter(v => v !== 'OTHERS');
+        const otherVal = document.getElementById(otherInputId).value;
+        if(otherVal) vals.push(otherVal);
+      }
+      return vals.join(', ');
+    }
+
+    function getSelectVal(selectId, otherInputId) {
+      const val = document.getElementById(selectId).value;
+      if(val === 'OTHERS') {
+        return document.getElementById(otherInputId).value || 'OTHERS';
+      }
+      return val;
+    }
+
     // CLIENT SUBMIT FORM
     document.getElementById('clientForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -349,10 +642,17 @@
         name: document.getElementById('c_name').value,
         phone: document.getElementById('c_phone').value,
         address: document.getElementById('c_address').value,
-        intended: document.getElementById('c_intended').value,
-        specialty: document.getElementById('c_specialty').value,
-        location: document.getElementById('c_location').value,
+        intended: getCheckedVals('c_intended', 'c_intended_other_div', 'c_intended_other'),
+        specialty: getCheckedVals('c_specialty', 'c_specialty_other_div', 'c_specialty_other'),
+        area_cat: document.getElementById('c_area_cat').value,
+        owner_cat: document.getElementById('c_owner_cat').value,
+        location: getSelectVal('c_location', 'c_location_other'),
+        min_size: document.getElementById('c_min_size').value,
+        max_size: document.getElementById('c_max_size').value,
+        size_unit: document.getElementById('c_size_unit').value,
+        min_budget: document.getElementById('c_min_budget').value,
         max_budget: document.getElementById('c_max_budget').value,
+        budget_unit: document.getElementById('c_budget_unit').value,
         followup: document.getElementById('c_followup').value,
         status: document.getElementById('c_status').value,
         remarks: document.getElementById('c_remarks').value
@@ -376,6 +676,7 @@
 
       alert('Client Saved Successfully!');
       this.reset();
+      autoGenIds();
       renderData();
       switchTab('dashboard-view');
     });
@@ -388,13 +689,26 @@
         date: document.getElementById('p_date').value,
         keyman: document.getElementById('p_keyman').value,
         phone: document.getElementById('p_phone').value,
-        intended: document.getElementById('p_intended').value,
-        specialty: document.getElementById('p_specialty').value,
-        location: document.getElementById('p_location').value,
+        intended: getCheckedVals('p_intended', 'p_intended_other_div', 'p_intended_other'),
+        specialty: getCheckedVals('p_specialty', 'p_specialty_other_div', 'p_specialty_other'),
+        area_cat: document.getElementById('p_area_cat').value,
+        owner_cat: document.getElementById('p_owner_cat').value,
+        location: getSelectVal('p_location', 'p_location_other'),
         size: document.getElementById('p_size').value,
+        size_unit: document.getElementById('p_size_unit').value,
         price: document.getElementById('p_price').value,
+        price_unit: document.getElementById('p_price_unit').value,
+        address: document.getElementById('p_address').value,
+        owner_details: Array.from(document.querySelectorAll('input[name="p_owner_details"]:checked')).map(cb => cb.value).join(', '),
+        road: document.getElementById('p_infra_road').value,
+        water: document.getElementById('p_infra_water').value,
+        elec: document.getElementById('p_infra_elec').value,
+        dispute: document.getElementById('p_dispute').value,
+        media: document.getElementById('p_media').value,
+        gloc: document.getElementById('p_gloc').value,
+        verified: document.getElementById('p_verified').value,
         status: document.getElementById('p_status').value,
-        address: document.getElementById('p_address').value
+        remarks: document.getElementById('p_remarks').value
       };
 
       properties.push(propData);
@@ -415,17 +729,17 @@
 
       alert('Property Saved Successfully!');
       this.reset();
+      autoGenIds();
       renderData();
       switchTab('dashboard-view');
     });
 
     function renderData() {
-      // Update Stat Badges
+      autoGenIds();
       document.getElementById('stat-clients').innerText = clients.length;
       document.getElementById('stat-props').innerText = properties.length;
-      document.getElementById('stat-avail').innerText = properties.filter(p => p.status === 'Available').length;
+      document.getElementById('stat-avail').innerText = properties.filter(p => p.status === 'AVAILABLE').length;
 
-      // Render Clients Table
       const cTb = document.querySelector('#clientTable tbody');
       cTb.innerHTML = '';
       clients.forEach(c => {
@@ -436,11 +750,10 @@
             <a href="tel:${cleanPhone}" style="color:#27AE60; text-decoration:none; font-weight:bold;">📞 Call</a> | 
             <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#25D366; text-decoration:none; font-weight:bold;">💬 WhatsApp</a>
           </td>
-          <td>${c.intended || ''}</td><td>${c.max_budget || ''}</td><td>${c.status || ''}</td>
+          <td>${c.intended || ''}</td><td>${c.max_budget ? c.max_budget + ' ' + c.budget_unit : ''}</td><td>${c.status || ''}</td>
         </tr>`;
       });
 
-      // Render Properties Table
       const pTb = document.querySelector('#propTable tbody');
       pTb.innerHTML = '';
       properties.forEach(p => {
@@ -451,15 +764,14 @@
             <a href="tel:${cleanPhone}" style="color:#27AE60; text-decoration:none; font-weight:bold;">📞 Call</a> | 
             <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#25D366; text-decoration:none; font-weight:bold;">💬 WhatsApp</a>
           </td>
-          <td>${p.intended || ''}</td><td>${p.price || ''}</td><td>${p.status || ''}</td>
+          <td>${p.intended || ''}</td><td>${p.price ? p.price + ' ' + p.price_unit : ''}</td><td>${p.status || ''}</td>
         </tr>`;
       });
 
-      // Update Follow-up Widget
       if (clients.length > 0) {
         const latest = clients[clients.length - 1];
         document.getElementById('fu-name').innerText = `${latest.name} (${latest.id})`;
-        document.getElementById('fu-details').innerText = `Due: ${latest.followup || 'Today'} • ${latest.location || 'North Bengal'} • Handler: Partner`;
+        document.getElementById('fu-details').innerText = `Due: ${latest.followup || 'Today'} • ${latest.location || 'North Bengal'} • Status: ${latest.status}`;
         const callBtn = document.getElementById('fu-call-btn');
         callBtn.href = `tel:${(latest.phone || '').replace(/\D/g, '')}`;
         callBtn.style.display = 'inline-block';
@@ -468,7 +780,7 @@
     }
 
     function exportExcel() {
-      alert("Preparing Excel download...");
+      alert("Opening Google Sheet Database...");
       window.open(SCRIPT_URL, '_blank');
     }
 
