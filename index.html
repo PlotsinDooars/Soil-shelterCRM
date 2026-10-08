@@ -5,223 +5,318 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soil & Shelter CRM</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f6f9; color: #333; }
-    h1 { color: #2c3e50; margin-bottom: 5px; }
-    .status-bar { padding: 10px 15px; background-color: #e8f4ea; border: 1px solid #c8e6c9; border-radius: 6px; font-weight: bold; color: #2e7d32; margin-bottom: 20px; display: inline-block; }
-    
-    /* NAV TABS FOR DASHBOARD */
-    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px; }
-    .nav-btn { padding: 10px 20px; background-color: #e0e0e0; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; color: #555; }
-    .nav-btn.active { background-color: #27ae60; color: white; }
-    
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f3f5f7; color: #333; padding-bottom: 40px; }
 
-    .container { display: flex; flex-wrap: wrap; gap: 20px; }
-    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; min-width: 300px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-    button { background-color: #27ae60; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-    button:hover { background-color: #219150; }
+    /* HEADER */
+    .top-header { background-color: #06402B; color: white; display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; }
+    .partner-name { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; border-left: 3px solid #28a745; padding-left: 8px; }
+    .brand-logo-box { background-color: #FFEB3B; color: #000; text-align: center; padding: 6px 20px; border-radius: 2px; }
+    .brand-logo-box h1 { font-size: 20px; font-weight: 900; letter-spacing: 1px; line-height: 1.1; }
+    .brand-logo-box span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* SUB-HEADER / STATS BAR */
+    .stats-bar { background-color: #042E1F; color: #A0C0B0; padding: 8px 25px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .workspace-tag { background-color: #0B5C3E; color: #7CE0A8; padding: 2px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; }
+    .stats-right { display: flex; gap: 15px; align-items: center; }
+    .badge-calls { background-color: #E74C3C; color: white; padding: 2px 10px; border-radius: 12px; font-weight: bold; font-size: 11px; }
+
+    /* NAVIGATION BAR */
+    .nav-bar { background: #E8ECEF; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: inset 0 -1px 2px rgba(0,0,0,0.05); }
+    .nav-links { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .nav-item { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #444; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: none; background: transparent; }
+    .nav-item:hover { background-color: #DCE2E6; }
+    .nav-item.active { background-color: #0B5C3E; color: white; }
+    .nav-btn-add { background-color: #0B5C3E; color: white; padding: 8px 14px; border-radius: 8px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .nav-btn-add:hover { background-color: #08462F; }
+
+    /* MAIN CONTAINER */
+    .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+
+    /* BANNER */
+    .sync-banner { background-color: #0B5C3E; color: white; border-radius: 12px; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .sync-banner-left { display: flex; align-items: center; gap: 15px; }
+    .sync-banner-icon { font-size: 28px; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 50%; }
+    .sync-banner h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .sync-banner p { font-size: 12px; color: #B0E0CA; }
+
+    /* QUICK CARDS GRID */
+    .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .quick-card { background: white; border-radius: 12px; padding: 18px; display: flex; align-items: center; gap: 15px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border: 1px solid #E5E9EC; transition: 0.2s; }
+    .quick-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
+    .qc-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .qc-green { background: #E8F8F0; color: #27AE60; }
+    .qc-blue { background: #EBF3FA; color: #2980B9; }
+    .qc-orange { background: #FEF5E7; color: #F39C12; }
+    .qc-info h4 { font-size: 14px; font-weight: 700; color: #2C3E50; }
+    .qc-info p { font-size: 11px; color: #7F8C8D; margin-top: 2px; }
+
+    /* MIDDLE WIDGETS */
+    .middle-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; margin-bottom: 20px; }
+    @media (max-width: 768px) { .middle-grid { grid-template-columns: 1fr; } }
     
-    .action-btns { display: flex; gap: 6px; }
-    .btn-call { background-color: #27ae60; text-decoration: none; color: white; padding: 5px 8px; border-radius: 4px; font-size: 12px; }
-    .btn-wa { background-color: #25d366; text-decoration: none; color: white; padding: 5px 8px; border-radius: 4px; font-size: 12px; }
+    .matchmaker-card { background: #0B5C3E; color: white; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+    .mm-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; }
+    .mm-desc { font-size: 11px; color: #B0E0CA; margin-top: 5px; }
+    .mm-btn { background: transparent; color: white; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: space-between; margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15); width: 100%; text-align: left; }
+
+    .followup-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #E5E9EC; }
+    .fu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 12px; font-weight: 700; color: #555; letter-spacing: 0.5px; }
+    .fu-item { background: #FFF5F5; border: 1px solid #FFE0E0; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+    .fu-info h5 { font-size: 13px; color: #C0392B; font-weight: 700; }
+    .fu-info p { font-size: 11px; color: #7F8C8D; margin-top: 2px; }
+    .fu-actions { display: flex; gap: 6px; }
+    .btn-sm-call { background: #27AE60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-sm-details { background: #ECF0F1; color: #2C3E50; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    /* BOTTOM EXCEL CARD */
+    .excel-card { background: white; border-radius: 12px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #E5E9EC; }
+    .excel-left { display: flex; align-items: center; gap: 15px; }
+    .excel-icon { background: #E8F8F0; color: #27AE60; padding: 10px; border-radius: 8px; font-size: 18px; }
+    .btn-export { background: #0B5C3E; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+    /* TAB VIEWS */
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+
+    /* FORM & TABLE STYLES */
+    .form-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #E5E9EC; max-width: 650px; margin: 0 auto; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #444; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 13px; }
+    .btn-save { background-color: #0B5C3E; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; width: 100%; margin-top: 10px; }
     
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
-    th { background-color: #f2f2f2; }
-    .checkbox-group { display: flex; gap: 10px; flex-wrap: wrap; }
-    .checkbox-group label { font-weight: normal; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 15px; }
+    th, td { padding: 12px; text-align: left; font-size: 13px; border-bottom: 1px solid #EEF2F5; }
+    th { background: #F8FAFC; color: #475569; font-weight: 700; }
   </style>
 </head>
 <body>
 
-  <h1>Soil & Shelter CRM</h1>
-  <div class="status-bar" id="sync-status">✅ Live Cloud Synced</div>
-
-  <!-- DASHBOARD NAVIGATION -->
-  <div class="nav-tabs">
-    <button class="nav-btn active" onclick="switchTab('dashboard-view')">📊 Dashboard & Directory</button>
-    <button class="nav-btn" onclick="switchTab('add-client-view')">➕ Add Client</button>
-    <button class="nav-btn" onclick="switchTab('add-prop-view')">➕ Add Property</button>
+  <!-- TOP BRANDING HEADER -->
+  <div class="top-header">
+    <div class="partner-name">BIKASH DEB ROY</div>
+    <div class="brand-logo-box">
+      <h1>SOIL & SHELTER</h1>
+      <span>Your Property Consultant</span>
+    </div>
+    <div class="partner-name">MD ANWAR HOSSAIN</div>
   </div>
 
-  <!-- TAB 1: DASHBOARD DIRECTORY -->
-  <div id="dashboard-view" class="tab-content active">
-    <h2>Clients Directory</h2>
-    <table id="clientTable">
-      <thead>
-        <tr>
-          <th>ID</th><th>Name</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <h2 style="margin-top: 30px;">Properties Directory</h2>
-    <table id="propTable">
-      <thead>
-        <tr>
-          <th>ID</th><th>Key Man</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <!-- TAB 2: ADD / EDIT CLIENT FORM -->
-  <div id="add-client-view" class="tab-content">
-    <div class="card" style="max-width: 600px;">
-      <h2>Add / Edit Client</h2>
-      <form id="clientForm">
-        <input type="hidden" id="c_edit_index" value="-1">
-        <div class="form-group"><label>Client ID</label><input type="text" id="c_id" required></div>
-        <div class="form-group"><label>Date</label><input type="date" id="c_date" required></div>
-        <div class="form-group"><label>Name</label><input type="text" id="c_name" required></div>
-        <div class="form-group"><label>Phone</label><input type="tel" id="c_phone" required></div>
-        <div class="form-group"><label>Address</label><input type="text" id="c_address"></div>
-        <div class="form-group">
-          <label>Intended Use</label>
-          <select id="c_intended" onchange="toggleOther('c_intended', 'c_intended_other_div')">
-            <option value="Residential">Residential</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Agricultural">Agricultural</option>
-            <option value="Industrial">Industrial</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="c_intended_other_div" style="display:none;"><label>Other Intended Use</label><input type="text" id="c_intended_other"></div>
-        <div class="form-group">
-          <label>Specialty</label>
-          <select id="c_specialty" onchange="toggleOther('c_specialty', 'c_specialty_other_div')">
-            <option value="Plot/Land">Plot/Land</option>
-            <option value="Flat/Apartment">Flat/Apartment</option>
-            <option value="House/Villa">House/Villa</option>
-            <option value="Commercial Space">Commercial Space</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="c_specialty_other_div" style="display:none;"><label>Other Specialty</label><input type="text" id="c_specialty_other"></div>
-        <div class="form-group"><label>Area Category</label><input type="text" id="c_area_cat"></div>
-        <div class="form-group"><label>Owner Category</label><input type="text" id="c_owner_cat"></div>
-        <div class="form-group">
-          <label>Location</label>
-          <select id="c_location" onchange="toggleOther('c_location', 'c_location_other_div')">
-            <option value="North">North</option>
-            <option value="South">South</option>
-            <option value="East">East</option>
-            <option value="West">West</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="c_location_other_div" style="display:none;"><label>Other Location</label><input type="text" id="c_location_other"></div>
-        <div class="form-group"><label>Min Size</label><input type="number" id="c_min_size"></div>
-        <div class="form-group"><label>Max Size</label><input type="number" id="c_max_size"></div>
-        <div class="form-group"><label>Size Unit</label><input type="text" id="c_size_unit" value="Sq Ft"></div>
-        <div class="form-group"><label>Min Budget</label><input type="number" id="c_min_budget"></div>
-        <div class="form-group"><label>Max Budget</label><input type="number" id="c_max_budget"></div>
-        <div class="form-group"><label>Budget Unit</label><input type="text" id="c_budget_unit" value="INR"></div>
-        <div class="form-group"><label>Next Follow Up</label><input type="date" id="c_followup"></div>
-        <div class="form-group">
-          <label>Status</label>
-          <select id="c_status">
-            <option value="Active">Active</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Closed">Closed</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Remarks</label><textarea id="c_remarks"></textarea></div>
-        <button type="submit">Save Client</button>
-      </form>
+  <!-- STATS SUB-HEADER -->
+  <div class="stats-bar">
+    <div>Workspace: <span class="workspace-tag">DOOARS-ESTATE-LIVE 🔑</span></div>
+    <div class="stats-right">
+      <span>Clients: <strong id="stat-clients">0</strong></span>
+      <span>Plots: <strong id="stat-props">0</strong></span>
+      <span>Available: <strong id="stat-avail">0</strong></span>
+      <span class="badge-calls" id="stat-calls">📞 Calls Due: 0</span>
     </div>
   </div>
 
-  <!-- TAB 3: ADD / EDIT PROPERTY FORM -->
-  <div id="add-prop-view" class="tab-content">
-    <div class="card" style="max-width: 600px;">
-      <h2>Add / Edit Property</h2>
-      <form id="propertyForm">
-        <input type="hidden" id="p_edit_index" value="-1">
-        <div class="form-group"><label>Property ID</label><input type="text" id="p_id" required></div>
-        <div class="form-group"><label>Date Listed</label><input type="date" id="p_date" required></div>
-        <div class="form-group"><label>Key Man</label><input type="text" id="p_keyman"></div>
-        <div class="form-group"><label>Phone</label><input type="tel" id="p_phone" required></div>
-        <div class="form-group">
-          <label>Intended Use</label>
-          <select id="p_intended" onchange="toggleOther('p_intended', 'p_intended_other_div')">
-            <option value="Residential">Residential</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Agricultural">Agricultural</option>
-            <option value="Industrial">Industrial</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="p_intended_other_div" style="display:none;"><label>Other Intended Use</label><input type="text" id="p_intended_other"></div>
-        <div class="form-group">
-          <label>Specialty</label>
-          <select id="p_specialty" onchange="toggleOther('p_specialty', 'p_specialty_other_div')">
-            <option value="Plot/Land">Plot/Land</option>
-            <option value="Flat/Apartment">Flat/Apartment</option>
-            <option value="House/Villa">House/Villa</option>
-            <option value="Commercial Space">Commercial Space</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="p_specialty_other_div" style="display:none;"><label>Other Specialty</label><input type="text" id="p_specialty_other"></div>
-        <div class="form-group"><label>Area Category</label><input type="text" id="p_area_cat"></div>
-        <div class="form-group"><label>Owner Category</label><input type="text" id="p_owner_cat"></div>
-        <div class="form-group">
-          <label>Location</label>
-          <select id="p_location" onchange="toggleOther('p_location', 'p_location_other_div')">
-            <option value="North">North</option>
-            <option value="South">South</option>
-            <option value="East">East</option>
-            <option value="West">West</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group" id="p_location_other_div" style="display:none;"><label>Other Location</label><input type="text" id="p_location_other"></div>
-        <div class="form-group"><label>Size</label><input type="number" id="p_size"></div>
-        <div class="form-group"><label>Size Unit</label><input type="text" id="p_size_unit" value="Sq Ft"></div>
-        <div class="form-group"><label>Price</label><input type="number" id="p_price"></div>
-        <div class="form-group"><label>Price Unit</label><input type="text" id="p_price_unit" value="INR"></div>
-        <div class="form-group">
-          <label>Status</label>
-          <select id="p_status">
-            <option value="Available">Available</option>
-            <option value="Pending">Pending</option>
-            <option value="Sold">Sold</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Owner Details Available</label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="p_owner_details" value="Name"> Name</label>
-            <label><input type="checkbox" name="p_owner_details" value="Phone"> Phone</label>
-            <label><input type="checkbox" name="p_owner_details" value="Address"> Address</label>
-            <label><input type="checkbox" name="p_owner_details" value="Documents"> Documents</label>
+  <!-- NAVIGATION TABS -->
+  <div class="nav-bar">
+    <div class="nav-links">
+      <button class="nav-item active" onclick="switchTab('dashboard-view')">🏠 Dashboard</button>
+      <button class="nav-item" onclick="switchTab('clients-view')">👥 Clients Database</button>
+      <button class="nav-item" onclick="switchTab('properties-view')">📍 Properties & Plots</button>
+      <button class="nav-item" onclick="switchTab('matchmaker-view')">🪄 Smart Matchmaker</button>
+      <button class="nav-item" onclick="switchTab('followups-view')">📞 Follow-up Calls</button>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn-add" onclick="switchTab('add-client-view')">+ Add Client</button>
+      <button class="nav-btn-add" onclick="switchTab('add-prop-view')">+ Add Property</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="container">
+
+    <!-- VIEW 1: DASHBOARD -->
+    <div id="dashboard-view" class="tab-view active">
+      
+      <!-- CLOUD SYNC BANNER -->
+      <div class="sync-banner">
+        <div class="sync-banner-left">
+          <div class="sync-banner-icon">👥</div>
+          <div>
+            <h3>Dual-Partner Real-Time Sync Active</h3>
+            <p>Desktop & Mobile are linked to the same cloud database. Both partners can add or edit records simultaneously.</p>
           </div>
         </div>
-        <div class="form-group"><label>Road Infra</label><input type="text" id="p_infra_road"></div>
-        <div class="form-group"><label>Water Infra</label><input type="text" id="p_infra_water"></div>
-        <div class="form-group"><label>Electricity Infra</label><input type="text" id="p_infra_elec"></div>
-        <div class="form-group"><label>Dispute Details</label><input type="text" id="p_dispute"></div>
-        <div class="form-group"><label>Media Taken</label><input type="text" id="p_media"></div>
-        <div class="form-group"><label>Google Location</label><input type="text" id="p_gloc"></div>
-        <div class="form-group">
-          <label>Verified</label>
-          <select id="p_verified">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+        <div id="sync-status" style="font-weight:700; color:#7CE0A8; font-size:13px;">✅ Live Cloud Synced</div>
+      </div>
+
+      <!-- QUICK ACCESS CARDS -->
+      <div class="quick-grid">
+        <div class="quick-card" onclick="switchTab('add-client-view')">
+          <div class="qc-icon qc-green">👤</div>
+          <div class="qc-info">
+            <h4>Add Client</h4>
+            <p>ID starts #1001</p>
+          </div>
         </div>
-        <div class="form-group"><label>Address</label><input type="text" id="p_address"></div>
-        <div class="form-group"><label>Remarks</label><textarea id="p_remarks"></textarea></div>
-        <button type="submit">Save Property</button>
-      </form>
+        <div class="quick-card" onclick="switchTab('add-prop-view')">
+          <div class="qc-icon qc-green">🏠</div>
+          <div class="qc-info">
+            <h4>Add Property</h4>
+            <p>ID starts #3001</p>
+          </div>
+        </div>
+        <div class="quick-card" onclick="switchTab('clients-view')">
+          <div class="qc-icon qc-blue">👥</div>
+          <div class="qc-info">
+            <h4>View Clients</h4>
+            <p>Search all buyers</p>
+          </div>
+        </div>
+        <div class="quick-card" onclick="switchTab('properties-view')">
+          <div class="qc-icon qc-orange">📍</div>
+          <div class="qc-info">
+            <h4>View Plots</h4>
+            <p>All North Bengal plots</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE WIDGETS -->
+      <div class="middle-grid">
+        <div class="matchmaker-card">
+          <div>
+            <div class="mm-title">🪄 Smart Matchmaker</div>
+            <div class="mm-desc">Auto match Location, Use, Specialty & Budget</div>
+          </div>
+          <button class="mm-btn" onclick="switchTab('matchmaker-view')">Find matching deals ➔</button>
+        </div>
+
+        <div class="followup-card">
+          <div class="fu-header">
+            <span>📅 FOLLOW-UP CALLS DUE TODAY / OVERDUE</span>
+            <a href="#" onclick="switchTab('followups-view'); return false;" style="color:#0B5C3E; text-decoration:none;">View All ➔</a>
+          </div>
+          <div id="fu-list">
+            <div class="fu-item">
+              <div class="fu-info">
+                <h5 id="fu-name">No Urgent Calls</h5>
+                <p id="fu-details">All follow-ups are up to date.</p>
+              </div>
+              <div class="fu-actions">
+                <a id="fu-call-btn" href="#" class="btn-sm-call" style="display:none;">📞 Call</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM EXCEL DOWNLOAD CARD -->
+      <div class="excel-card">
+        <div class="excel-left">
+          <div class="excel-icon">📊</div>
+          <div>
+            <h4 style="font-size:13px; font-weight:700;">Download Full 2-Sheet Excel Database</h4>
+            <p style="font-size:11px; color:#7F8C8D;">Generates clean dataset with Clients and Properties worksheets</p>
+          </div>
+        </div>
+        <button class="btn-export" onclick="exportExcel()">📥 Export Dataset</button>
+      </div>
+
     </div>
+
+    <!-- VIEW 2: CLIENTS DIRECTORY -->
+    <div id="clients-view" class="tab-view">
+      <h2 style="margin-bottom:15px; font-size:18px;">Clients Directory</h2>
+      <table id="clientTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Budget</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- VIEW 3: PROPERTIES DIRECTORY -->
+    <div id="properties-view" class="tab-view">
+      <h2 style="margin-bottom:15px; font-size:18px;">Properties Directory</h2>
+      <table id="propTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Key Man</th><th>Phone</th><th>Actions</th><th>Intended Use</th><th>Price</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- VIEW 4: ADD CLIENT FORM -->
+    <div id="add-client-view" class="tab-view">
+      <div class="form-card">
+        <h2 style="margin-bottom:15px; font-size:18px;">Add / Edit Client</h2>
+        <form id="clientForm">
+          <input type="hidden" id="c_edit_index" value="-1">
+          <div class="form-group"><label>Client ID</label><input type="text" id="c_id" required placeholder="#1001"></div>
+          <div class="form-group"><label>Date</label><input type="date" id="c_date" required></div>
+          <div class="form-group"><label>Name</label><input type="text" id="c_name" required></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="c_phone" required></div>
+          <div class="form-group"><label>Address</label><input type="text" id="c_address"></div>
+          <div class="form-group"><label>Intended Use</label><input type="text" id="c_intended" placeholder="Residential / Commercial / Agricultural"></div>
+          <div class="form-group"><label>Specialty</label><input type="text" id="c_specialty" placeholder="Plot / Flat / Villa"></div>
+          <div class="form-group"><label>Location Preference</label><input type="text" id="c_location"></div>
+          <div class="form-group"><label>Max Budget</label><input type="number" id="c_max_budget"></div>
+          <div class="form-group"><label>Next Follow Up Date</label><input type="date" id="c_followup"></div>
+          <div class="form-group"><label>Status</label>
+            <select id="c_status">
+              <option value="Active">Active</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Remarks</label><textarea id="c_remarks"></textarea></div>
+          <button type="submit" class="btn-save">Save Client</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW 5: ADD PROPERTY FORM -->
+    <div id="add-prop-view" class="tab-view">
+      <div class="form-card">
+        <h2 style="margin-bottom:15px; font-size:18px;">Add / Edit Property</h2>
+        <form id="propertyForm">
+          <input type="hidden" id="p_edit_index" value="-1">
+          <div class="form-group"><label>Property ID</label><input type="text" id="p_id" required placeholder="#3001"></div>
+          <div class="form-group"><label>Date Listed</label><input type="date" id="p_date" required></div>
+          <div class="form-group"><label>Key Man / Contact Person</label><input type="text" id="p_keyman"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="p_phone" required></div>
+          <div class="form-group"><label>Intended Use</label><input type="text" id="p_intended"></div>
+          <div class="form-group"><label>Specialty</label><input type="text" id="p_specialty"></div>
+          <div class="form-group"><label>Location</label><input type="text" id="p_location"></div>
+          <div class="form-group"><label>Size</label><input type="text" id="p_size"></div>
+          <div class="form-group"><label>Price</label><input type="number" id="p_price"></div>
+          <div class="form-group"><label>Status</label>
+            <select id="p_status">
+              <option value="Available">Available</option>
+              <option value="Pending">Pending</option>
+              <option value="Sold">Sold</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Address / Details</label><textarea id="p_address"></textarea></div>
+          <button type="submit" class="btn-save">Save Property</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW 6: MATCHMAKER -->
+    <div id="matchmaker-view" class="tab-view">
+      <h2 style="margin-bottom:15px; font-size:18px;">Smart Matchmaker</h2>
+      <p style="font-size:13px; color:#666;">Match buyer budgets & preferences with registered properties automatically.</p>
+    </div>
+
+    <!-- VIEW 7: FOLLOWUPS -->
+    <div id="followups-view" class="tab-view">
+      <h2 style="margin-bottom:15px; font-size:18px;">Follow-up Calls Schedule</h2>
+      <p style="font-size:13px; color:#666;">View all scheduled client follow-ups.</p>
+    </div>
+
   </div>
 
   <script>
@@ -235,59 +330,39 @@
     document.getElementById('c_followup').valueAsDate = new Date();
 
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       
-      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      const targetView = document.getElementById(tabId);
+      if(targetView) targetView.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.getAttribute('onclick').includes(tabId));
       if(activeBtn) activeBtn.classList.add('active');
-    }
-
-    function toggleOther(selectId, divId) {
-      const select = document.getElementById(selectId);
-      const div = document.getElementById(divId);
-      div.style.display = select.value === 'Other' ? 'block' : 'none';
-    }
-
-    function getVal(selectId, otherId) {
-      const val = document.getElementById(selectId).value;
-      return val === 'Other' ? document.getElementById(otherId).value : val;
     }
 
     // CLIENT SUBMIT FORM
     document.getElementById('clientForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const editIdx = parseInt(document.getElementById('c_edit_index').value);
-
       const clientData = {
         id: document.getElementById('c_id').value,
         date: document.getElementById('c_date').value,
         name: document.getElementById('c_name').value,
         phone: document.getElementById('c_phone').value,
         address: document.getElementById('c_address').value,
-        intended: getVal('c_intended', 'c_intended_other'),
-        specialty: getVal('c_specialty', 'c_specialty_other'),
-        area_cat: document.getElementById('c_area_cat').value,
-        owner_cat: document.getElementById('c_owner_cat').value,
-        location: getVal('c_location', 'c_location_other'),
-        min_size: document.getElementById('c_min_size').value,
-        max_size: document.getElementById('c_max_size').value,
-        size_unit: document.getElementById('c_size_unit').value,
-        min_budget: document.getElementById('c_min_budget').value,
+        intended: document.getElementById('c_intended').value,
+        specialty: document.getElementById('c_specialty').value,
+        location: document.getElementById('c_location').value,
         max_budget: document.getElementById('c_max_budget').value,
-        budget_unit: document.getElementById('c_budget_unit').value,
         followup: document.getElementById('c_followup').value,
         status: document.getElementById('c_status').value,
         remarks: document.getElementById('c_remarks').value
       };
 
-      if (editIdx > -1) { clients[editIdx] = clientData; } 
-      else { clients.push(clientData); }
-
+      clients.push(clientData);
       localStorage.setItem('ss_clients', JSON.stringify(clients));
 
       if (SCRIPT_URL) {
-        document.getElementById('sync-status').innerText = '⏳ Syncing to Cloud...';
+        document.getElementById('sync-status').innerText = '⏳ Syncing...';
         try {
           await fetch(SCRIPT_URL, {
             method: 'POST',
@@ -296,11 +371,11 @@
             body: JSON.stringify({ clients: clients, properties: properties })
           });
           document.getElementById('sync-status').innerText = '✅ Live Cloud Synced';
-        } catch (err) { console.error("Sync Error:", err); }
+        } catch (err) { console.error(err); }
       }
 
-      alert(editIdx > -1 ? 'Client Updated!' : 'Client Added!');
-      resetClientForm();
+      alert('Client Saved Successfully!');
+      this.reset();
       renderData();
       switchTab('dashboard-view');
     });
@@ -308,43 +383,25 @@
     // PROPERTY SUBMIT FORM
     document.getElementById('propertyForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const editIdx = parseInt(document.getElementById('p_edit_index').value);
-      const ownerDetailsChecked = Array.from(document.querySelectorAll('input[name="p_owner_details"]:checked')).map(cb => cb.value);
-
       const propData = {
         id: document.getElementById('p_id').value,
         date: document.getElementById('p_date').value,
         keyman: document.getElementById('p_keyman').value,
         phone: document.getElementById('p_phone').value,
-        intended: getVal('p_intended', 'p_intended_other'),
-        specialty: getVal('p_specialty', 'p_specialty_other'),
-        area_cat: document.getElementById('p_area_cat').value,
-        owner_cat: document.getElementById('p_owner_cat').value,
-        location: getVal('p_location', 'p_location_other'),
+        intended: document.getElementById('p_intended').value,
+        specialty: document.getElementById('p_specialty').value,
+        location: document.getElementById('p_location').value,
         size: document.getElementById('p_size').value,
-        size_unit: document.getElementById('p_size_unit').value,
         price: document.getElementById('p_price').value,
-        price_unit: document.getElementById('p_price_unit').value,
         status: document.getElementById('p_status').value,
-        owner_details: ownerDetailsChecked.join(', '),
-        road: document.getElementById('p_infra_road').value,
-        water: document.getElementById('p_infra_water').value,
-        elec: document.getElementById('p_infra_elec').value,
-        dispute: document.getElementById('p_dispute').value,
-        media: document.getElementById('p_media').value,
-        gloc: document.getElementById('p_gloc').value,
-        verified: document.getElementById('p_verified').value,
-        address: document.getElementById('p_address').value,
-        remarks: document.getElementById('p_remarks').value
+        address: document.getElementById('p_address').value
       };
 
-      if (editIdx > -1) { properties[editIdx] = propData; } 
-      else { properties.push(propData); }
-
+      properties.push(propData);
       localStorage.setItem('ss_properties', JSON.stringify(properties));
 
       if (SCRIPT_URL) {
-        document.getElementById('sync-status').innerText = '⏳ Syncing to Cloud...';
+        document.getElementById('sync-status').innerText = '⏳ Syncing...';
         try {
           await fetch(SCRIPT_URL, {
             method: 'POST',
@@ -353,56 +410,66 @@
             body: JSON.stringify({ clients: clients, properties: properties })
           });
           document.getElementById('sync-status').innerText = '✅ Live Cloud Synced';
-        } catch (err) { console.error("Sync Error:", err); }
+        } catch (err) { console.error(err); }
       }
 
-      alert(editIdx > -1 ? 'Property Updated!' : 'Property Added!');
-      resetPropForm();
+      alert('Property Saved Successfully!');
+      this.reset();
       renderData();
       switchTab('dashboard-view');
     });
 
-    function resetClientForm() {
-      document.getElementById('clientForm').reset();
-      document.getElementById('c_edit_index').value = "-1";
-      document.getElementById('c_date').valueAsDate = new Date();
-      document.getElementById('c_followup').valueAsDate = new Date();
-    }
-
-    function resetPropForm() {
-      document.getElementById('propertyForm').reset();
-      document.getElementById('p_edit_index').value = "-1";
-      document.getElementById('p_date').valueAsDate = new Date();
-    }
-
     function renderData() {
+      // Update Stat Badges
+      document.getElementById('stat-clients').innerText = clients.length;
+      document.getElementById('stat-props').innerText = properties.length;
+      document.getElementById('stat-avail').innerText = properties.filter(p => p.status === 'Available').length;
+
+      // Render Clients Table
       const cTb = document.querySelector('#clientTable tbody');
       cTb.innerHTML = '';
-      clients.forEach((c) => {
-        const cleanPhone = c.phone.replace(/\D/g, '');
+      clients.forEach(c => {
+        const cleanPhone = (c.phone || '').replace(/\D/g, '');
         cTb.innerHTML += `<tr>
-          <td>${c.id}</td><td>${c.name}</td><td>${c.phone}</td>
-          <td class="action-btns">
-            <a href="tel:${cleanPhone}" class="btn-call">📞 Call</a>
-            <a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+          <td>${c.id || ''}</td><td>${c.name || ''}</td><td>${c.phone || ''}</td>
+          <td>
+            <a href="tel:${cleanPhone}" style="color:#27AE60; text-decoration:none; font-weight:bold;">📞 Call</a> | 
+            <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#25D366; text-decoration:none; font-weight:bold;">💬 WhatsApp</a>
           </td>
-          <td>${c.intended}</td><td>${c.status}</td>
+          <td>${c.intended || ''}</td><td>${c.max_budget || ''}</td><td>${c.status || ''}</td>
         </tr>`;
       });
 
+      // Render Properties Table
       const pTb = document.querySelector('#propTable tbody');
       pTb.innerHTML = '';
-      properties.forEach((p) => {
-        const cleanPhone = p.phone.replace(/\D/g, '');
+      properties.forEach(p => {
+        const cleanPhone = (p.phone || '').replace(/\D/g, '');
         pTb.innerHTML += `<tr>
-          <td>${p.id}</td><td>${p.keyman}</td><td>${p.phone}</td>
-          <td class="action-btns">
-            <a href="tel:${cleanPhone}" class="btn-call">📞 Call</a>
-            <a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+          <td>${p.id || ''}</td><td>${p.keyman || ''}</td><td>${p.phone || ''}</td>
+          <td>
+            <a href="tel:${cleanPhone}" style="color:#27AE60; text-decoration:none; font-weight:bold;">📞 Call</a> | 
+            <a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#25D366; text-decoration:none; font-weight:bold;">💬 WhatsApp</a>
           </td>
-          <td>${p.intended}</td><td>${p.status}</td>
+          <td>${p.intended || ''}</td><td>${p.price || ''}</td><td>${p.status || ''}</td>
         </tr>`;
       });
+
+      // Update Follow-up Widget
+      if (clients.length > 0) {
+        const latest = clients[clients.length - 1];
+        document.getElementById('fu-name').innerText = `${latest.name} (${latest.id})`;
+        document.getElementById('fu-details').innerText = `Due: ${latest.followup || 'Today'} • ${latest.location || 'North Bengal'} • Handler: Partner`;
+        const callBtn = document.getElementById('fu-call-btn');
+        callBtn.href = `tel:${(latest.phone || '').replace(/\D/g, '')}`;
+        callBtn.style.display = 'inline-block';
+        document.getElementById('stat-calls').innerText = `📞 Calls Due: ${clients.length}`;
+      }
+    }
+
+    function exportExcel() {
+      alert("Preparing Excel download...");
+      window.open(SCRIPT_URL, '_blank');
     }
 
     renderData();
