@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,11 @@
       --card-bg: #ffffff;
       --text: #1f2937;
       --border: #e5e7eb;
+      --danger: #dc2626;
+      --whatsapp: #25d366;
+      --whatsapp-dark: #128c7e;
+      --call: #2563eb;
+      --call-dark: #1d4ed8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 30px; }
@@ -30,13 +34,11 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Dashboard Metrics */
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .metric-card { background: var(--card-bg); padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
     .metric-card h3 { font-size: 0.9rem; color: #6b7280; text-transform: uppercase; margin-bottom: 5px; }
     .metric-card p { font-size: 2rem; font-weight: bold; color: var(--primary-dark); }
 
-    /* Form Styles */
     .form-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
     .form-card h2 { margin-bottom: 15px; color: var(--primary); font-size: 1.2rem; border-bottom: 2px solid var(--bg); padding-bottom: 5px; }
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
@@ -49,24 +51,35 @@
     .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
     .checkbox-group label { font-size: 0.85rem; font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    .btn { background: var(--primary); color: white; padding: 10px 18px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn { background: var(--primary); color: white; padding: 6px 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
     .btn:hover { background: var(--primary-dark); }
     .btn-accent { background: var(--accent); }
+    .btn-edit { background: #4b5563; }
+    .btn-edit:hover { background: #374151; }
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-call { background: var(--call); }
+    .btn-call:hover { background: var(--call-dark); }
+    .btn-wa { background: var(--whatsapp); }
+    .btn-wa:hover { background: var(--whatsapp-dark); }
 
-    /* Tables */
     .table-container { background: var(--card-bg); border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
     th { background: #f9fafb; padding: 10px; border-bottom: 2px solid var(--border); color: #374151; }
-    td { padding: 10px; border-bottom: 1px solid var(--border); }
+    td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tr:hover { background: #f9fafb; }
     .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
     .badge-available { background: #d1fae5; color: #065f46; }
     .badge-pending { background: #fef3c7; color: #92400e; }
 
+    .action-btns { display: flex; gap: 4px; flex-wrap: wrap; }
     .match-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 12px; margin-top: 10px; }
+    #sync-status { text-align: center; font-size: 0.8rem; padding: 5px; background: #e0f2fe; color: #0369a1; border-bottom: 1px solid #bae6fd; }
   </style>
 </head>
 <body>
+
+  <div id="sync-status">🔄 Syncing Data...</div>
 
   <header>
     <h1>SOIL & SHELTER</h1>
@@ -75,8 +88,8 @@
 
   <nav>
     <button class="active" onclick="switchTab('dashboard')">Dashboard</button>
-    <button onclick="switchTab('add-client')">+ Add Client</button>
-    <button onclick="switchTab('add-property')">+ Add Property</button>
+    <button onclick="switchTab('add-client')" id="add-client-tab-btn">+ Add Client</button>
+    <button onclick="switchTab('add-property')" id="add-prop-tab-btn">+ Add Property</button>
     <button onclick="switchTab('clients')">Clients List</button>
     <button onclick="switchTab('properties')">Plots List</button>
     <button onclick="switchTab('matchmaker')">🔍 Matchmaker</button>
@@ -113,21 +126,23 @@
                 <th>Status</th>
                 <th>Next Follow Up</th>
                 <th>Remarks</th>
+                <th>Quick Actions</th>
               </tr>
             </thead>
             <tbody id="dues-table-body">
-              <tr><td colspan="6" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>
+              <tr><td colspan="7" style="text-align: center; color: #9ca3af;">Loading data...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ADD CLIENT TAB -->
+    <!-- ADD / EDIT CLIENT TAB -->
     <div id="add-client" class="tab-content">
       <div class="form-card">
-        <h2>Add New Client</h2>
+        <h2 id="client-form-title">Add New Client</h2>
         <form id="clientForm">
+          <input type="hidden" id="c_edit_index" value="-1">
           <div class="form-grid">
             <div class="form-group">
               <label>Date</label>
@@ -142,7 +157,7 @@
               <input type="text" id="c_name" required placeholder="e.g. Rahul Roy">
             </div>
             <div class="form-group">
-              <label>Phone Number (with country code)</label>
+              <label>Phone Number</label>
               <input type="tel" id="c_phone" required placeholder="+91 9876543210">
             </div>
             <div class="form-group full-width">
@@ -251,16 +266,20 @@
             </div>
           </div>
           <br>
-          <button type="submit" class="btn">Save Client</button>
+          <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn" id="clientSubmitBtn">Save Client</button>
+            <button type="button" class="btn btn-danger" id="clientCancelBtn" style="display:none;" onclick="resetClientForm()">Cancel Edit</button>
+          </div>
         </form>
       </div>
     </div>
 
-    <!-- ADD PROPERTY TAB -->
+    <!-- ADD / EDIT PROPERTY TAB -->
     <div id="add-property" class="tab-content">
       <div class="form-card">
-        <h2>Add New Property</h2>
+        <h2 id="prop-form-title">Add New Property</h2>
         <form id="propertyForm">
+          <input type="hidden" id="p_edit_index" value="-1">
           <div class="form-grid">
             <div class="form-group">
               <label>Date Listed</label>
@@ -362,7 +381,6 @@
               </select>
             </div>
 
-            <!-- NEW REQUIRED FIELDS -->
             <div class="form-group full-width">
               <label>1. Know Owner Details (Select all available)</label>
               <div class="checkbox-group">
@@ -430,7 +448,10 @@
             </div>
           </div>
           <br>
-          <button type="submit" class="btn">Save Property</button>
+          <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn" id="propSubmitBtn">Save Property</button>
+            <button type="button" class="btn btn-danger" id="propCancelBtn" style="display:none;" onclick="resetPropForm()">Cancel Edit</button>
+          </div>
         </form>
       </div>
     </div>
@@ -450,6 +471,7 @@
                 <th>Location</th>
                 <th>Budget</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="clients-list-body"></tbody>
@@ -474,6 +496,7 @@
                 <th>Price</th>
                 <th>Verified</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="properties-list-body"></tbody>
@@ -524,6 +547,8 @@
   </div>
 
   <script>
+    const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
     let clients = JSON.parse(localStorage.getItem('ss_clients')) || [];
     let properties = JSON.parse(localStorage.getItem('ss_properties')) || [];
 
@@ -531,16 +556,30 @@
     document.getElementById('p_date').valueAsDate = new Date();
     document.getElementById('c_followup').valueAsDate = new Date();
 
-    function updateIDs() {
-      document.getElementById('c_id').value = 'C' + (clients.length + 1);
-      document.getElementById('p_id').value = 'P' + (properties.length + 1);
+    function cleanPhone(phone) {
+      if (!phone) return '';
+      return phone.replace(/[^0-9]/g, '');
     }
 
-    function switchTab(tabId) {
+    function updateIDs() {
+      if (document.getElementById('c_edit_index').value === "-1") {
+        document.getElementById('c_id').value = 'C' + (clients.length + 1);
+      }
+      if (document.getElementById('p_edit_index').value === "-1") {
+        document.getElementById('p_id').value = 'P' + (properties.length + 1);
+      }
+    }
+
+    function switchTab(tabId, eventObj) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+      if(eventObj && eventObj.target) {
+        eventObj.target.classList.add('active');
+      } else {
+        if(tabId === 'add-client') document.getElementById('add-client-tab-btn').classList.add('active');
+        if(tabId === 'add-property') document.getElementById('add-prop-tab-btn').classList.add('active');
+      }
       renderData();
     }
 
@@ -564,11 +603,54 @@
       return selectVal;
     }
 
-    // Add Client
-    document.getElementById('clientForm').addEventListener('submit', function(e) {
+    function setSelectVal(selectId, otherId, val) {
+      const selectEl = document.getElementById(selectId);
+      const options = Array.from(selectEl.options).map(o => o.value);
+      if (options.includes(val)) {
+        selectEl.value = val;
+        toggleOtherInput(selectEl, otherId);
+      } else if (val) {
+        selectEl.value = 'OTHERS';
+        toggleOtherInput(selectEl, otherId);
+        document.getElementById(otherId).value = val;
+      }
+    }
+
+    async function fetchDataFromCloud() {
+      const syncStatus = document.getElementById('sync-status');
+      if(SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+        syncStatus.innerText = '📱 Local Storage Active (Add Google Sheet URL to enable Cloud Sync)';
+        renderData();
+        return;
+      }
+      syncStatus.innerText = '🔄 Syncing with Cloud Database...';
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        clients = data.clients || [];
+        properties = data.properties || [];
+        localStorage.setItem('ss_clients', JSON.stringify(clients));
+        localStorage.setItem('ss_properties', JSON.stringify(properties));
+        syncStatus.innerText = '✅ Live Cloud Synced';
+        syncStatus.style.background = '#d1fae5';
+        syncStatus.style.color = '#065f46';
+        renderData();
+      } catch (err) {
+        syncStatus.innerText = '⚠️ Using local storage (Cloud unavailable)';
+        syncStatus.style.background = '#fef3c7';
+        syncStatus.style.color = '#92400e';
+        renderData();
+      }
+    }
+
+    // CLIENT ADD / EDIT FORM
+    document.getElementById('clientForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const newClient = {
+      const editIdx = parseInt(document.getElementById('c_edit_index').value);
+
+      const clientData = {
         id: document.getElementById('c_id').value,
+        date: document.getElementById('c_date').value,
         name: document.getElementById('c_name').value,
         phone: document.getElementById('c_phone').value,
         address: document.getElementById('c_address').value,
@@ -587,22 +669,80 @@
         status: document.getElementById('c_status').value,
         remarks: document.getElementById('c_remarks').value
       };
-      clients.push(newClient);
+
+      if (editIdx > -1) {
+        clients[editIdx] = clientData;
+      } else {
+        clients.push(clientData);
+      }
+
       localStorage.setItem('ss_clients', JSON.stringify(clients));
-      alert('Client Added Successfully!');
-      this.reset();
-      updateIDs();
+      alert(editIdx > -1 ? 'Client Updated!' : 'Client Added!');
+      resetClientForm();
       renderData();
     });
 
-    // Add Property
-    document.getElementById('propertyForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    function editClient(index) {
+      const c = clients[index];
+      document.getElementById('c_edit_index').value = index;
+      document.getElementById('c_id').value = c.id;
+      document.getElementById('c_date').value = c.date || new Date().toISOString().split('T')[0];
+      document.getElementById('c_name').value = c.name;
+      document.getElementById('c_phone').value = c.phone;
+      document.getElementById('c_address').value = c.address || '';
       
+      setSelectVal('c_intended', 'c_intended_other', c.intended);
+      setSelectVal('c_specialty', 'c_specialty_other', c.specialty);
+      setSelectVal('c_location', 'c_location_other', c.location);
+
+      document.getElementById('c_area_cat').value = c.area_cat || 'PLAIN AREA';
+      document.getElementById('c_owner_cat').value = c.owner_cat || 'GENERAL';
+      document.getElementById('c_min_size').value = c.min_size || '';
+      document.getElementById('c_max_size').value = c.max_size || '';
+      document.getElementById('c_size_unit').value = c.size_unit || 'DECIMAL';
+      document.getElementById('c_min_budget').value = c.min_budget || '';
+      document.getElementById('c_max_budget').value = c.max_budget || '';
+      document.getElementById('c_budget_unit').value = c.budget_unit || 'LAKH';
+      document.getElementById('c_followup').value = c.followup || '';
+      document.getElementById('c_status').value = c.status || 'NEW';
+      document.getElementById('c_remarks').value = c.remarks || '';
+
+      document.getElementById('client-form-title').innerText = 'Edit Client Details (' + c.id + ')';
+      document.getElementById('clientSubmitBtn').innerText = 'Update Client';
+      document.getElementById('clientCancelBtn').style.display = 'inline-block';
+
+      switchTab('add-client');
+    }
+
+    function deleteClient(index) {
+      if (confirm('Are you sure you want to delete client ' + clients[index].id + '?')) {
+        clients.splice(index, 1);
+        localStorage.setItem('ss_clients', JSON.stringify(clients));
+        renderData();
+      }
+    }
+
+    function resetClientForm() {
+      document.getElementById('clientForm').reset();
+      document.getElementById('c_edit_index').value = '-1';
+      document.getElementById('client-form-title').innerText = 'Add New Client';
+      document.getElementById('clientSubmitBtn').innerText = 'Save Client';
+      document.getElementById('clientCancelBtn').style.display = 'none';
+      document.getElementById('c_date').valueAsDate = new Date();
+      document.getElementById('c_followup').valueAsDate = new Date();
+      updateIDs();
+    }
+
+    // PROPERTY ADD / EDIT FORM
+    document.getElementById('propertyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const editIdx = parseInt(document.getElementById('p_edit_index').value);
+
       const ownerDetailsChecked = Array.from(document.querySelectorAll('input[name="p_owner_details"]:checked')).map(cb => cb.value);
 
-      const newProp = {
+      const propData = {
         id: document.getElementById('p_id').value,
+        date: document.getElementById('p_date').value,
         keyman: document.getElementById('p_keyman').value,
         phone: document.getElementById('p_phone').value,
         intended: getVal('p_intended', 'p_intended_other'),
@@ -626,13 +766,77 @@
         address: document.getElementById('p_address').value,
         remarks: document.getElementById('p_remarks').value
       };
-      properties.push(newProp);
+
+      if (editIdx > -1) {
+        properties[editIdx] = propData;
+      } else {
+        properties.push(propData);
+      }
+
       localStorage.setItem('ss_properties', JSON.stringify(properties));
-      alert('Property Added Successfully!');
-      this.reset();
-      updateIDs();
+      alert(editIdx > -1 ? 'Property Updated!' : 'Property Added!');
+      resetPropForm();
       renderData();
     });
+
+    function editProperty(index) {
+      const p = properties[index];
+      document.getElementById('p_edit_index').value = index;
+      document.getElementById('p_id').value = p.id;
+      document.getElementById('p_date').value = p.date || new Date().toISOString().split('T')[0];
+      document.getElementById('p_keyman').value = p.keyman;
+      document.getElementById('p_phone').value = p.phone;
+
+      setSelectVal('p_intended', 'p_intended_other', p.intended);
+      setSelectVal('p_specialty', 'p_specialty_other', p.specialty);
+      setSelectVal('p_location', 'p_location_other', p.location);
+
+      document.getElementById('p_area_cat').value = p.area_cat || 'PLAIN AREA';
+      document.getElementById('p_owner_cat').value = p.owner_cat || 'GENERAL';
+      document.getElementById('p_size').value = p.size;
+      document.getElementById('p_size_unit').value = p.size_unit || 'DECIMAL';
+      document.getElementById('p_price').value = p.price;
+      document.getElementById('p_price_unit').value = p.price_unit || 'LAKH';
+      document.getElementById('p_status').value = p.status || 'AVAILABLE';
+
+      document.querySelectorAll('input[name="p_owner_details"]').forEach(cb => {
+        cb.checked = p.owner_details ? p.owner_details.includes(cb.value) : false;
+      });
+
+      document.getElementById('p_infra_road').value = p.road || '';
+      document.getElementById('p_infra_water').value = p.water || '';
+      document.getElementById('p_infra_elec').value = p.elec || '';
+      document.getElementById('p_dispute').value = p.dispute || '';
+      document.getElementById('p_media').value = p.media || 'NO';
+      document.getElementById('p_gloc').value = p.gloc || 'NO';
+      document.getElementById('p_verified').value = p.verified || 'NO';
+      document.getElementById('p_address').value = p.address || '';
+      document.getElementById('p_remarks').value = p.remarks || '';
+
+      document.getElementById('prop-form-title').innerText = 'Edit Property Details (' + p.id + ')';
+      document.getElementById('propSubmitBtn').innerText = 'Update Property';
+      document.getElementById('propCancelBtn').style.display = 'inline-block';
+
+      switchTab('add-property');
+    }
+
+    function deleteProperty(index) {
+      if (confirm('Are you sure you want to delete property ' + properties[index].id + '?')) {
+        properties.splice(index, 1);
+        localStorage.setItem('ss_properties', JSON.stringify(properties));
+        renderData();
+      }
+    }
+
+    function resetPropForm() {
+      document.getElementById('propertyForm').reset();
+      document.getElementById('p_edit_index').value = '-1';
+      document.getElementById('prop-form-title').innerText = 'Add New Property';
+      document.getElementById('propSubmitBtn').innerText = 'Save Property';
+      document.getElementById('propCancelBtn').style.display = 'none';
+      document.getElementById('p_date').valueAsDate = new Date();
+      updateIDs();
+    }
 
     function renderData() {
       updateIDs();
@@ -645,44 +849,80 @@
 
       const duesBody = document.getElementById('dues-table-body');
       if (dues.length === 0) {
-        duesBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>`;
+        duesBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>`;
       } else {
-        duesBody.innerHTML = dues.map(c => `
+        duesBody.innerHTML = dues.map(c => {
+          const originalIdx = clients.findIndex(item => item.id === c.id);
+          const rawPhone = cleanPhone(c.phone);
+          const waMsg = encodeURIComponent(`Hello ${c.name}, greetings from Soil & Shelter! Calling regarding your property query.`);
+          return `
+            <tr>
+              <td><b>${c.id}</b></td>
+              <td>${c.name}</td>
+              <td>${c.phone}</td>
+              <td><span class="badge badge-pending">${c.status}</span></td>
+              <td>${c.followup}</td>
+              <td>${c.remarks || '-'}</td>
+              <td>
+                <div class="action-btns">
+                  <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
+                  <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+                  <button class="btn btn-edit" onclick="editClient(${originalIdx})">Edit</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('clients-list-body').innerHTML = clients.map((c, i) => {
+        const rawPhone = cleanPhone(c.phone);
+        const waMsg = encodeURIComponent(`Hello ${c.name}, greetings from Soil & Shelter! We have an update regarding your plot requirement in ${c.location}.`);
+        return `
           <tr>
             <td><b>${c.id}</b></td>
             <td>${c.name}</td>
-            <td><a href="tel:${c.phone}">${c.phone}</a></td>
+            <td>${c.phone}</td>
+            <td>${c.intended}</td>
+            <td>${c.location}</td>
+            <td>₹${c.min_budget}-${c.max_budget} ${c.budget_unit}</td>
             <td><span class="badge badge-pending">${c.status}</span></td>
-            <td>${c.followup}</td>
-            <td>${c.remarks || '-'}</td>
+            <td>
+              <div class="action-btns">
+                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
+                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+                <button class="btn btn-edit" onclick="editClient(${i})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteClient(${i})">Delete</button>
+              </div>
+            </td>
           </tr>
-        `).join('');
-      }
+        `;
+      }).join('');
 
-      document.getElementById('clients-list-body').innerHTML = clients.map(c => `
-        <tr>
-          <td><b>${c.id}</b></td>
-          <td>${c.name}</td>
-          <td><a href="tel:${c.phone}">${c.phone}</a></td>
-          <td>${c.intended}</td>
-          <td>${c.location}</td>
-          <td>₹${c.min_budget}-${c.max_budget} ${c.budget_unit}</td>
-          <td><span class="badge badge-pending">${c.status}</span></td>
-        </tr>
-      `).join('');
-
-      document.getElementById('properties-list-body').innerHTML = properties.map(p => `
-        <tr>
-          <td><b>${p.id}</b></td>
-          <td>${p.keyman}</td>
-          <td><a href="tel:${p.phone}">${p.phone}</a></td>
-          <td>${p.location}</td>
-          <td>${p.size} ${p.size_unit}</td>
-          <td>₹${p.price} ${p.price_unit}</td>
-          <td><b>${p.verified || 'NO'}</b></td>
-          <td><span class="badge badge-available">${p.status}</span></td>
-        </tr>
-      `).join('');
+      document.getElementById('properties-list-body').innerHTML = properties.map((p, i) => {
+        const rawPhone = cleanPhone(p.phone);
+        const waMsg = encodeURIComponent(`Hello ${p.keyman}, regarding Property ID: ${p.id} listed in ${p.location}.`);
+        return `
+          <tr>
+            <td><b>${p.id}</b></td>
+            <td>${p.keyman}</td>
+            <td>${p.phone}</td>
+            <td>${p.location}</td>
+            <td>${p.size} ${p.size_unit}</td>
+            <td>₹${p.price} ${p.price_unit}</td>
+            <td><b>${p.verified || 'NO'}</b></td>
+            <td><span class="badge badge-available">${p.status}</span></td>
+            <td>
+              <div class="action-btns">
+                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call</a>
+                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+                <button class="btn btn-edit" onclick="editProperty(${i})">Edit</button>
+                <button class="btn btn-danger" onclick="deleteProperty(${i})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function runMatchmaker() {
@@ -700,21 +940,29 @@
       if (matches.length === 0) {
         resDiv.innerHTML = `<p style="color:#ef4444; font-weight:bold;">No matching properties found for selected criteria.</p>`;
       } else {
-        resDiv.innerHTML = `<h3>Matches Found (${matches.length})</h3>` + matches.map(p => `
-          <div class="match-card">
-            <h4>Property ${p.id} - ${p.location} (${p.status})</h4>
-            <p><b>Key Man:</b> ${p.keyman} (${p.phone})</p>
-            <p><b>Use:</b> ${p.intended} | <b>Specialty:</b> ${p.specialty}</p>
-            <p><b>Size:</b> ${p.size} ${p.size_unit} | <b>Price:</b> ₹${p.price} ${p.price_unit}</p>
-            <p><b>Infrastructure:</b> Road: ${p.road || 'N/A'}, Water: ${p.water || 'N/A'}, Elec: ${p.elec || 'N/A'}</p>
-            <p><b>Owner Docs:</b> ${p.owner_details || 'None specified'}</p>
-            <p><b>Verified:</b> ${p.verified || 'NO'} | <b>Photos/Videos:</b> ${p.media || 'NO'} | <b>Google Map Location:</b> ${p.gloc || 'NO'}</p>
-          </div>
-        `).join('');
+        resDiv.innerHTML = `<h3>Matches Found (${matches.length})</h3>` + matches.map(p => {
+          const rawPhone = cleanPhone(p.phone);
+          const waMsg = encodeURIComponent(`Hello ${p.keyman}, regarding Property ID: ${p.id} in ${p.location}.`);
+          return `
+            <div class="match-card">
+              <h4>Property ${p.id} - ${p.location} (${p.status})</h4>
+              <p><b>Key Man:</b> ${p.keyman} (${p.phone})</p>
+              <p><b>Use:</b> ${p.intended} | <b>Specialty:</b> ${p.specialty}</p>
+              <p><b>Size:</b> ${p.size} ${p.size_unit} | <b>Price:</b> ₹${p.price} ${p.price_unit}</p>
+              <p><b>Infrastructure:</b> Road: ${p.road || 'N/A'}, Water: ${p.water || 'N/A'}, Elec: ${p.elec || 'N/A'}</p>
+              <p><b>Owner Docs:</b> ${p.owner_details || 'None specified'}</p>
+              <p><b>Verified:</b> ${p.verified || 'NO'} | <b>Photos/Videos:</b> ${p.media || 'NO'} | <b>Google Map Location:</b> ${p.gloc || 'NO'}</p>
+              <div class="action-btns" style="margin-top:8px;">
+                <a href="tel:${rawPhone}" class="btn btn-call">📞 Call Key Man</a>
+                <a href="https://wa.me/${rawPhone}?text=${waMsg}" target="_blank" class="btn btn-wa">💬 WhatsApp Key Man</a>
+              </div>
+            </div>
+          `;
+        }).join('');
       }
     }
 
-    renderData();
+    fetchDataFromCloud();
   </script>
 </body>
 </html>
