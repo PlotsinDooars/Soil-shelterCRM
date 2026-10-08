@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +46,9 @@
     input, select, textarea { padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; width: 100%; }
     input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); }
     
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+    .checkbox-group label { font-size: 0.85rem; font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
     .btn { background: var(--primary); color: white; padding: 10px 18px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; }
     .btn:hover { background: var(--primary-dark); }
     .btn-accent { background: var(--accent); }
@@ -59,7 +63,6 @@
     .badge-available { background: #d1fae5; color: #065f46; }
     .badge-pending { background: #fef3c7; color: #92400e; }
 
-    /* Matchmaker Results Card */
     .match-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 12px; margin-top: 10px; }
   </style>
 </head>
@@ -149,25 +152,27 @@
 
             <div class="form-group">
               <label>Intended Use</label>
-              <select id="c_intended" required>
+              <select id="c_intended" required onchange="toggleOtherInput(this, 'c_intended_other')">
                 <option value="">Select Intended Use</option>
                 <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
                 <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
                 <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
                 <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
-                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option>OTHERS</option>
+                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="c_intended_other" placeholder="Specify Other Intended Use" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
               <label>Specialty</label>
-              <select id="c_specialty" required>
+              <select id="c_specialty" required onchange="toggleOtherInput(this, 'c_specialty_other')">
                 <option value="">Select Specialty</option>
                 <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
                 <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
                 <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
-                <option>PADDY FIELD</option><option>OTHERS</option>
+                <option>PADDY FIELD</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="c_specialty_other" placeholder="Specify Other Specialty" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
@@ -186,7 +191,7 @@
 
             <div class="form-group">
               <label>Plot Location</label>
-              <select id="c_location" required>
+              <select id="c_location" required onchange="toggleOtherInput(this, 'c_location_other')">
                 <option value="">Select Location</option>
                 <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
                 <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
@@ -196,8 +201,9 @@
                 <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
                 <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
                 <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
-                <option>NAXALBARI</option><option>MATIGARA</option><option>OTHERS</option>
+                <option>NAXALBARI</option><option>MATIGARA</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="c_location_other" placeholder="Specify Other Location" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
@@ -275,25 +281,27 @@
 
             <div class="form-group">
               <label>Intended Use</label>
-              <select id="p_intended" required>
+              <select id="p_intended" required onchange="toggleOtherInput(this, 'p_intended_other')">
                 <option value="">Select Intended Use</option>
                 <option>RESIDENT</option><option>FARMHOUSE</option><option>SECOND HOME</option><option>INVESTMENT</option>
                 <option>HOUSING PROJECT</option><option>RESORT</option><option>HOMESTAY</option><option>HOTEL</option>
                 <option>RESTURENT</option><option>FACTORY</option><option>FARMING</option><option>TEA PLANTATION</option>
                 <option>POULTRY FARMING</option><option>HATCHERY</option><option>AYURVEDA</option><option>FISHARY</option>
-                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option>OTHERS</option>
+                <option>SCHOOL</option><option>HOSPITAL</option><option>ASHRAM</option><option>AGRICULTURE</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="p_intended_other" placeholder="Specify Other Intended Use" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
               <label>Specialty</label>
-              <select id="p_specialty" required>
+              <select id="p_specialty" required onchange="toggleOtherInput(this, 'p_specialty_other')">
                 <option value="">Select Specialty</option>
                 <option>HILL VIEW</option><option>KJ VIEW</option><option>RIVER SIDE</option><option>NH 17 SIDE</option>
                 <option>NH 717 SIDE</option><option>REMOTE AREA</option><option>BAZAR AREA</option><option>FOREST SIDE</option>
                 <option>DONBOSKO AREA</option><option>HIGH LAND</option><option>UP & DOWN LAND</option><option>SWAMP LAND</option>
-                <option>PADDY FIELD</option><option>OTHERS</option>
+                <option>PADDY FIELD</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="p_specialty_other" placeholder="Specify Other Specialty" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
@@ -312,7 +320,7 @@
 
             <div class="form-group">
               <label>Plot Location</label>
-              <select id="p_location" required>
+              <select id="p_location" required onchange="toggleOtherInput(this, 'p_location_other')">
                 <option value="">Select Location</option>
                 <option>OODLABARI</option><option>DON BOSKO</option><option>TURIBARI</option><option>MANABARI</option>
                 <option>P DAMDIM</option><option>MALBAZAR</option><option>BORODIGHI</option><option>CHALSHA</option>
@@ -322,8 +330,9 @@
                 <option>BELAKOBA</option><option>SHALBARI</option><option>MANJING</option><option>JHANDI</option>
                 <option>NOKDARA</option><option>SAMTHAR</option><option>PUBUNG</option><option>PANBU</option>
                 <option>CHARKHOL</option><option>SINGJEE</option><option>GAJOLDOBA</option><option>SILIGURI</option>
-                <option>NAXALBARI</option><option>MATIGARA</option><option>OTHERS</option>
+                <option>NAXALBARI</option><option>MATIGARA</option><option value="OTHERS">OTHERS</option>
               </select>
+              <input type="text" id="p_location_other" placeholder="Specify Other Location" style="display:none; margin-top:5px;">
             </div>
 
             <div class="form-group">
@@ -350,6 +359,63 @@
               <label>Status</label>
               <select id="p_status">
                 <option>AVAILABLE</option><option>SOLD</option><option>HOLD</option>
+              </select>
+            </div>
+
+            <!-- NEW REQUIRED FIELDS -->
+            <div class="form-group full-width">
+              <label>1. Know Owner Details (Select all available)</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" name="p_owner_details" value="Mobile No"> Mobile No</label>
+                <label><input type="checkbox" name="p_owner_details" value="ROR Porcha"> ROR Porcha</label>
+                <label><input type="checkbox" name="p_owner_details" value="Deeds"> Deeds</label>
+                <label><input type="checkbox" name="p_owner_details" value="Site Plan"> Site Plan</label>
+                <label><input type="checkbox" name="p_owner_details" value="Resident Address"> Resident Address</label>
+                <label><input type="checkbox" name="p_owner_details" value="Legal Heir"> Legal Heir</label>
+              </div>
+            </div>
+
+            <div class="form-group full-width" style="border:1px solid #e5e7eb; padding:10px; border-radius:6px; background:#fafafa;">
+              <label style="font-weight:bold; color:var(--primary);">2. Plot Infrastructure Available</label>
+              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:5px;">
+                <div>
+                  <label>Road (Type & Width)</label>
+                  <input type="text" id="p_infra_road" placeholder="e.g. Pitch Road, 20 ft">
+                </div>
+                <div>
+                  <label>Water (Source & Distance)</label>
+                  <input type="text" id="p_infra_water" placeholder="e.g. PHE / Well, 50m">
+                </div>
+                <div>
+                  <label>Electricity (Nearest Pole Type)</label>
+                  <input type="text" id="p_infra_elec" placeholder="e.g. LT Pole, 10ft away">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label>3. Arise Any Dispute?</label>
+              <input type="text" id="p_dispute" placeholder="Mention dispute details if any, or type 'NO'">
+            </div>
+
+            <div class="form-group">
+              <label>4. Taken Photo & Video?</label>
+              <select id="p_media">
+                <option>NO</option><option>YES</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>5. Taken Google Location?</label>
+              <select id="p_gloc">
+                <option>NO</option><option>YES</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>6. Verified Status?</label>
+              <select id="p_verified">
+                <option>NO</option><option>YES</option>
               </select>
             </div>
 
@@ -406,6 +472,7 @@
                 <th>Location</th>
                 <th>Size</th>
                 <th>Price</th>
+                <th>Verified</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -457,11 +524,9 @@
   </div>
 
   <script>
-    // Local Data Storage (Simulating Cloud Sync)
     let clients = JSON.parse(localStorage.getItem('ss_clients')) || [];
     let properties = JSON.parse(localStorage.getItem('ss_properties')) || [];
 
-    // Set Default Dates
     document.getElementById('c_date').valueAsDate = new Date();
     document.getElementById('p_date').valueAsDate = new Date();
     document.getElementById('c_followup').valueAsDate = new Date();
@@ -479,6 +544,26 @@
       renderData();
     }
 
+    function toggleOtherInput(selectEl, inputId) {
+      const inputEl = document.getElementById(inputId);
+      if (selectEl.value === 'OTHERS') {
+        inputEl.style.display = 'block';
+        inputEl.required = true;
+      } else {
+        inputEl.style.display = 'none';
+        inputEl.required = false;
+        inputEl.value = '';
+      }
+    }
+
+    function getVal(selectId, otherId) {
+      const selectVal = document.getElementById(selectId).value;
+      if (selectVal === 'OTHERS') {
+        return document.getElementById(otherId).value;
+      }
+      return selectVal;
+    }
+
     // Add Client
     document.getElementById('clientForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -487,11 +572,11 @@
         name: document.getElementById('c_name').value,
         phone: document.getElementById('c_phone').value,
         address: document.getElementById('c_address').value,
-        intended: document.getElementById('c_intended').value,
-        specialty: document.getElementById('c_specialty').value,
+        intended: getVal('c_intended', 'c_intended_other'),
+        specialty: getVal('c_specialty', 'c_specialty_other'),
         area_cat: document.getElementById('c_area_cat').value,
         owner_cat: document.getElementById('c_owner_cat').value,
-        location: document.getElementById('c_location').value,
+        location: getVal('c_location', 'c_location_other'),
         min_size: document.getElementById('c_min_size').value,
         max_size: document.getElementById('c_max_size').value,
         size_unit: document.getElementById('c_size_unit').value,
@@ -513,20 +598,31 @@
     // Add Property
     document.getElementById('propertyForm').addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      const ownerDetailsChecked = Array.from(document.querySelectorAll('input[name="p_owner_details"]:checked')).map(cb => cb.value);
+
       const newProp = {
         id: document.getElementById('p_id').value,
         keyman: document.getElementById('p_keyman').value,
         phone: document.getElementById('p_phone').value,
-        intended: document.getElementById('p_intended').value,
-        specialty: document.getElementById('p_specialty').value,
+        intended: getVal('p_intended', 'p_intended_other'),
+        specialty: getVal('p_specialty', 'p_specialty_other'),
         area_cat: document.getElementById('p_area_cat').value,
         owner_cat: document.getElementById('p_owner_cat').value,
-        location: document.getElementById('p_location').value,
+        location: getVal('p_location', 'p_location_other'),
         size: document.getElementById('p_size').value,
         size_unit: document.getElementById('p_size_unit').value,
         price: document.getElementById('p_price').value,
         price_unit: document.getElementById('p_price_unit').value,
         status: document.getElementById('p_status').value,
+        owner_details: ownerDetailsChecked.join(', '),
+        road: document.getElementById('p_infra_road').value,
+        water: document.getElementById('p_infra_water').value,
+        elec: document.getElementById('p_infra_elec').value,
+        dispute: document.getElementById('p_dispute').value,
+        media: document.getElementById('p_media').value,
+        gloc: document.getElementById('p_gloc').value,
+        verified: document.getElementById('p_verified').value,
         address: document.getElementById('p_address').value,
         remarks: document.getElementById('p_remarks').value
       };
@@ -542,13 +638,11 @@
       updateIDs();
       const todayStr = new Date().toISOString().split('T')[0];
 
-      // Call dues
       const dues = clients.filter(c => c.followup === todayStr);
       document.getElementById('metric-call-dues').innerText = dues.length;
       document.getElementById('metric-available-plots').innerText = properties.filter(p => p.status === 'AVAILABLE').length;
       document.getElementById('metric-active-clients').innerText = clients.filter(c => c.status !== 'DEAL CLOSE' && c.status !== 'NOT INTERESTED').length;
 
-      // Render Dues Table
       const duesBody = document.getElementById('dues-table-body');
       if (dues.length === 0) {
         duesBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af;">No follow-up calls due today.</td></tr>`;
@@ -565,7 +659,6 @@
         `).join('');
       }
 
-      // Render Clients Table
       document.getElementById('clients-list-body').innerHTML = clients.map(c => `
         <tr>
           <td><b>${c.id}</b></td>
@@ -578,7 +671,6 @@
         </tr>
       `).join('');
 
-      // Render Properties Table
       document.getElementById('properties-list-body').innerHTML = properties.map(p => `
         <tr>
           <td><b>${p.id}</b></td>
@@ -587,6 +679,7 @@
           <td>${p.location}</td>
           <td>${p.size} ${p.size_unit}</td>
           <td>₹${p.price} ${p.price_unit}</td>
+          <td><b>${p.verified || 'NO'}</b></td>
           <td><span class="badge badge-available">${p.status}</span></td>
         </tr>
       `).join('');
@@ -613,12 +706,14 @@
             <p><b>Key Man:</b> ${p.keyman} (${p.phone})</p>
             <p><b>Use:</b> ${p.intended} | <b>Specialty:</b> ${p.specialty}</p>
             <p><b>Size:</b> ${p.size} ${p.size_unit} | <b>Price:</b> ₹${p.price} ${p.price_unit}</p>
+            <p><b>Infrastructure:</b> Road: ${p.road || 'N/A'}, Water: ${p.water || 'N/A'}, Elec: ${p.elec || 'N/A'}</p>
+            <p><b>Owner Docs:</b> ${p.owner_details || 'None specified'}</p>
+            <p><b>Verified:</b> ${p.verified || 'NO'} | <b>Photos/Videos:</b> ${p.media || 'NO'} | <b>Google Map Location:</b> ${p.gloc || 'NO'}</p>
           </div>
         `).join('');
       }
     }
 
-    // Initial Load
     renderData();
   </script>
 </body>
